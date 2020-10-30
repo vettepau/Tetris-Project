@@ -15,6 +15,7 @@ The game will consist of 6 different classes:
 
 Using Tetris-Architecture.html for guidance and resources 
 '''
+
 import pygame
 
 
@@ -25,6 +26,9 @@ pygame.init()
 #creates Window 800 X 600
 screen = pygame.display.set_mode((800,600))
 pygame.display.set_caption("Aggie Land Tetris!")
+windowIcon = pygame.image.load("Texas A&M Logo.png")
+pygame.display.set_icon(windowIcon)
+
 
 
 running = True
@@ -33,4 +37,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+    screen.fill(( 128, 0, 0))
+    
+    pygame.display.update()
 

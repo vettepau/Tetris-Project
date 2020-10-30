@@ -15,3 +15,19 @@ The game will consist of 6 different classes:
 
 Using Tetris-Architecture.html for guidance and resources 
 '''
+import pygame
+
+
+#Intialize
+pygame.init()
+
+
+#creates Window 800 X 600
+screen = pygame.display.set_mode((800,600))
+
+
+#Game Loop
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False

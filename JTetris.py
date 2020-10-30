@@ -23,6 +23,7 @@ import pygame
 #Intialize
 pygame.init()
 
+clock = pygame.time.Clock()
 
 #creates Window 800 X 600
 screen = pygame.display.set_mode((800,600))
@@ -39,6 +40,9 @@ while running:
         if event.type == pygame.QUIT:
             running = False
     screen.fill(( 128, 0, 0))
-    
+    clock.tick(60) 
     pygame.display.update()
+    
 
+
+pygame.quit()

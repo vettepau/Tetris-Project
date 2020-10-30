@@ -27,7 +27,7 @@ screen = pygame.display.set_mode((800,600))
 pygame.display.set_caption("Aggie Land Tetris!")
 
 
-running = true
+running = True
 #Game Loop
 while running:
     for event in pygame.event.get():

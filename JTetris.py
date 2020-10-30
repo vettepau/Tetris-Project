@@ -24,12 +24,12 @@ pygame.init()
 
 #creates Window 800 X 600
 screen = pygame.display.set_mode((800,600))
+pygame.display.set_caption("Aggie Land Tetris!")
 
 
+running = true
 #Game Loop
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
-#Controls

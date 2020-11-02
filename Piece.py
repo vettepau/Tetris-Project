@@ -15,6 +15,17 @@ The game will consist of 6 different classes:
 
 Using Tetris-Architecture.html for guidance and resources 
 '''
+import random
 
 class Piece:
-    pieces = [[]]
+    piece = [[]]
+    
+    
+    def newPiece():
+        i = random.randrange(0,6)
+        if i == 0:
+            piece = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[1,1,1,1]]
+        elif i == 1:
+            piece = [[]]
+        
+        

@@ -17,6 +17,13 @@ The game will consist of 6 different classes:
 Using Tetris-Architecture.html for guidance and resources 
 '''
 
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Oct 30 13:56:26 2020
+
+@author: setht
+"""
+
 import pygame
 
 
@@ -32,6 +39,10 @@ windowIcon = pygame.image.load("Texas A&M Logo.png")
 pygame.display.set_icon(windowIcon)
 
 
+#Play Field
+board = pygame.image.load("Black Game Screen.png")
+
+
 
 running = True
 #Game Loop
@@ -40,7 +51,8 @@ while running:
         if event.type == pygame.QUIT:
             running = False
     screen.fill(( 128, 0, 0))
-    clock.tick(60) 
+    screen.blit(board, (250, 0))
+  
     pygame.display.update()
     
 

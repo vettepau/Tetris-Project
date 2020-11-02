@@ -65,9 +65,9 @@ while running:
         
         #Check for keyboard input
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
+            if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                 currentPieceX += -30
-            if event.key == pygame.K_RIGHT:
+            if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                  currentPieceX += 30
             if event.key == pygame.K_p:
                 print('Pause')

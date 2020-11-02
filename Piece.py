@@ -18,34 +18,16 @@ Using Tetris-Architecture.html for guidance and resources
 import random
 
 class Piece:
-    piece = [[]]
+    piece = [()]
     body = [[]]
     width = 0
     height = 0
     skirt = []
     
-    
-    
-    #generates new piece
-    def newPiece(): 
-        i = random.randrange(0,7)
-        if i == 0:
-            piece = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[1,1,1,1]] #horiz line
-        elif i == 1:
-            piece = [[0,0,0,0],[0,0,0,0],[1,0,0,0],[1,1,1,0]] #left L
-        elif i == 2:
-            piece = [[0,0,0,0],[0,0,0,0],[0,0,1,0],[1,1,1,0]] #right L
-        elif i == 3:
-            piece = [[0,0,0,0],[0,0,0,0],[1,1,0,0],[1,1,0,0]] #cube
-        elif i == 4:
-            piece = [[0,0,0,0],[0,0,0,0],[0,1,1,0],[1,1,0,0]] #S
-        elif i == 5:
-            piece = [[0,0,0,0],[0,0,0,0],[0,1,0,0],[1,1,1,0]] #T
-        elif i == 6:
-            piece = [[0,0,0,0],[0,0,0,0],[1,1,0,0],[0,1,1,0]] #Dog 
-        else:
-            piece = [[0,0,0,0],[0,0,0,0],[0,0,1,1],[1,1,0,0]] #Dog inverse
-            
+    def Piece():
+        width = 0
+        height = 0
+        
     def getwidth():
         return Piece.width
     
@@ -54,3 +36,31 @@ class Piece:
     
     def getskirt():
         return Piece.skirt
+        
+    
+    
+    #generates new piece
+    def newPiece(): 
+        i = random.randrange(0,6)
+        if i == 0:
+            piece = [(0,0),(0,1),(0,2),(0,3)] #vertical line
+        elif i == 1:
+            piece = [(0,0),(0,1),(0,2),(1,0)] #right L
+        elif i == 2:
+            piece = [(0,0),(1,0),(1,1),(1,2)] #left L
+        elif i == 3:
+            piece = [(0,0),(0,1),(1,0),(1,1)] #cube
+        elif i == 4:
+            piece = [(0,0),(1,0),(1,1),(2,0)] #T
+        elif i == 5:
+            piece = [(0,1),(1,0),(1,1),(2,0)] #left Dog 
+        else:
+            piece = [(0,0),(1,0),(1,1),(2,1)] #right dog
+            
+        return piece
+            
+    def toString():
+        out = ''
+        for p in Piece.body:
+            out += '(' + p.x + ',' + p.y + ')'
+        return out

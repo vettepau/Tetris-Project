@@ -17,5 +17,7 @@ Using Tetris-Architecture.html for guidance and resources
 '''
 
 class board:
-    grid = [[]]
-    backupgrid = [[]]
+    rows, cols = 20, 10
+    grid = [[0]*cols]*rows
+    backupgrid = grid
+    

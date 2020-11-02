@@ -16,3 +16,5 @@ The game will consist of 6 different classes:
 Using Tetris-Architecture.html for guidance and resources 
 '''
 
+class Piece:
+    pieces = [[]]

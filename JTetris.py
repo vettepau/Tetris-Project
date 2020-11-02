@@ -23,7 +23,6 @@ Created on Fri Oct 30 13:56:26 2020
 
 @author: setht
 """
-
 import pygame
 
 
@@ -43,6 +42,12 @@ yellow = pygame.image.load("Yellow.png")
 
 
 
+currentPiece = yellow
+currentPieceX = 400
+currentPieceY = 0
+
+
+
 
 #Play Field
 board = pygame.image.load("Black Game Screen.png")
@@ -55,6 +60,15 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        
+        #Check for keyboard input
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                print("left")
+            if event.key == pygame.K_RIGHT:
+                print("Right")
+        
+        
     screen.fill(( 128, 0, 0))
     screen.blit(board, (250, 0))
   

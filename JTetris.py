@@ -45,7 +45,8 @@ yellow = pygame.image.load("Yellow.png")
 currentPieceImg = yellow
 currentPieceX = 400
 currentPieceY = 0
-
+currentPieceWidth = 60
+currentPieceHeight = 60
 
 
 def currentPiece(image,x,y):
@@ -76,6 +77,12 @@ while running:
     screen.fill(( 128, 0, 0))
     screen.blit(board, (250, 0))
     
+    
+    #Bounding the piece
+    if currentPieceX <= 250:
+        currentPieceX = 250
+    elif currentPieceX >= 550 - currentPieceWidth:
+        currentPieceX = 550 - currentPieceWidth
     
     currentPiece(currentPieceImg, currentPieceX, currentPieceY)
     

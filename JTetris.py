@@ -45,7 +45,7 @@ yellow = pygame.image.load("Yellow.png")
 currentPieceImg = yellow
 currentPieceX = 400
 currentPieceY = 0
-currentPieceChangeX = 0
+
 
 
 def currentPiece(image,x,y):
@@ -68,17 +68,15 @@ while running:
         #Check for keyboard input
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                currentPieceChangeX = -30
+                 currentPieceX += -30
             if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                 currentPieceChangeX = 30
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_RIGHT or event.key == pygame.K_d or event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                currentPieceChangeX = 0 
+                  currentPieceX += 30
+       
         
     screen.fill(( 128, 0, 0))
     screen.blit(board, (250, 0))
     
-    currentPieceX += currentPieceChangeX
+    
     currentPiece(currentPieceImg, currentPieceX, currentPieceY)
     
     pygame.display.update()

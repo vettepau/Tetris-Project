@@ -42,10 +42,12 @@ yellow = pygame.image.load("Yellow.png")
 
 
 
-currentPiece = yellow
+currentPieceImg = yellow
 currentPieceX = 400
 currentPieceY = 0
 
+def currentPiece(image,x,y):
+    screen.blit(image, (x,y))
 
 
 
@@ -64,14 +66,15 @@ while running:
         #Check for keyboard input
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                print("left")
+                currentPieceX += -30
             if event.key == pygame.K_RIGHT:
-                print("Right")
+                 currentPieceX += 30
         
         
     screen.fill(( 128, 0, 0))
     screen.blit(board, (250, 0))
-  
+    currentPiece(currentPieceImg, currentPieceX, currentPieceY)
+    
     pygame.display.update()
     
 

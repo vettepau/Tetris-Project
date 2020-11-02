@@ -69,8 +69,10 @@ while running:
                 currentPieceX += -30
             if event.key == pygame.K_RIGHT:
                  currentPieceX += 30
-        
-        
+            if event.key == pygame.K_p:
+                print('Pause')
+            if event.key == pygame.K_RETURN:
+                print('start')
     screen.fill(( 128, 0, 0))
     screen.blit(board, (250, 0))
     currentPiece(currentPieceImg, currentPieceX, currentPieceY)

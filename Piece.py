@@ -23,6 +23,7 @@ class Piece:
     width = 0
     height = 0
     next = () 
+    color = ''
     
     def Piece(points):
         Piece.body = points
@@ -53,32 +54,43 @@ class Piece:
         return Piece.width
     
     def getheight():
-        return Piece.width
+        return Piece.height
     
     def getskirt():
         return Piece.skirt
     
     def nextRotation():
         return Piece.next
+    
+    def getcolor():
+        return Piece.color
         
     #generates new piece
     def getPiece(): 
         i = random.randrange(0,6)
         if i == 0:
             piece = [(0,0),(0,1),(0,2),(0,3)] #vertical line
+            color = 'cyan'
         elif i == 1:
             piece = [(0,0),(0,1),(0,2),(1,0)] #right L
+            color = 'blue'
         elif i == 2:
             piece = [(0,0),(1,0),(1,1),(1,2)] #left L
+            color = 'orange'
         elif i == 3:
             piece = [(0,0),(0,1),(1,0),(1,1)] #cube
+            color = 'yellow'
         elif i == 4:
             piece = [(0,0),(1,0),(1,1),(2,0)] #T
+            color = 'purple'
         elif i == 5:
             piece = [(0,1),(1,0),(1,1),(2,0)] #left Dog 
+            color = 'red'
         else:
             piece = [(0,0),(1,0),(1,1),(2,1)] #right dog
+            color = 'green'
             
+        Piece.color = color
         return piece
             
     def pieceRow(piece):

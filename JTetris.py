@@ -22,10 +22,6 @@ Using Tetris-Architecture.html for guidance and resources
 """
 Created on Fri Oct 30 13:56:26 2020
 
-# -*- coding: utf-8 -*-
-
-Created on Fri Oct 30 13:56:26 2020
-
 @author: setht
 """
 
@@ -41,13 +37,13 @@ clock = pygame.time.Clock()
 windowWidth = 800
 windowHeight = 600
 playWidth = 300  # meaning 300 // 10 = 30 width per block
-playHeight = 600  # meaning 600 // 20 = 20 height per block
+playHeight = 600  # meaning 600 // 20 = 20 height per blo ck
 blockSize = 30
 topLeftOfPlayX = (windowWidth - playWidth) // 2
 
 
 #Create font Object
-fontObj = pygame.font.Font('8-BIT WONDER.ttf', 60)
+fontObj = pygame.font.Font('8-BIT WONDER.ttf', 30)
 
 #creates Window 800 X 600
 screen = pygame.display.set_mode((windowWidth, windowHeight))
@@ -177,6 +173,7 @@ class Piece(object):
         self.color = colors[shapes.index(shape)] # Returns the color of the shape being passed
         self.rotation = 0 #Defaulted to 0, will incremint when up arrow is pressed, number will refrence which grid to display.
 
+    
 
 def main(screen):
     lockedPositions = {} #Initialize Locked Postitions as a blank dictionary
@@ -190,11 +187,11 @@ def main(screen):
     
     currentPiece = getShape() #Literally the only remaining part of the original code other than the window, changed to fit the getShape Method.
     nextPiece = getShape()
-    
+    fastFall = 1
     
     #THE GAME LOOP, AS FROM THE ORIGINAL BUILD, BEFORE EVERYTHING WENT BAD
     while run:
-        fallCheck = 0.30
+        fallCheck = 0.30/fastFall #should divide by 2 during fast fall, doubling speed
         grid = createGrid(lockedPositions) #Called because we need to update the grid BEFORE ANYTHING ELSE
         fallTime += clock.get_rawtime() #Adds how much time has passed since last click
         clock.tick() # Resets the raw time for next fall time update. 
@@ -225,13 +222,15 @@ def main(screen):
                         currentPiece.x += -1 #Oppisite of the movement from key
                         
                 if event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                    print("fast fall") #PLACE HOLDER
+                    fastFall = 2
                 
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
                     currentPiece.rotation += 1 #Changes the rotation cycles the layouts of shape. 
                     if not (valid(currentPiece, grid)):
                         currentPiece.rotation += -1
-                    
+            if event.type == pygame.KEYUP: #When Key Is let go, used to reset fast fall
+                if event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                    fastFall = 1 #Should return drop to normal speed
         
         shapePosition = convertShape(currentPiece)
         
@@ -298,7 +297,7 @@ def getShape():
 
 def convertShape(shape):
     positions = [] #new empty list
-    form = shape.shape[shape.rotation % len(shape.shape)] #Modulus allows us to cycle through rotations :) hope that helps you in your design, Paul
+    form = shape.shape[shape.rotation % len(shape.shape)] #Modulus allows us to cycle through rotations :) hope that helps you in your design, Pual
     
     for i, line in enumerate(form): #had a lot of fun with this one. Sarcasm = True
         row = list(line)
@@ -307,7 +306,7 @@ def convertShape(shape):
                 positions.append((shape.x + j, shape.y + i))
                 
     for i, pos in enumerate(positions):
-        positions[i] = (pos[0] , pos[1] ) #may or may not need offsets, will check when Paul passes his shapes
+        positions[i] = (pos[0]-2 , pos[1] -4) #may or may not need offsets, will check when Paul passes his shapes
     
     return positions
 
@@ -339,8 +338,7 @@ def checkLost(positions):
         
 
 
-def draw_text_middle(text, size, color, surface):  
-    pass
+
    
 def drawGrid(surface, grid):
     
@@ -373,8 +371,11 @@ def clearRows(grid, lockedPositions):
         unsorted (1,2) , (5,3) (9,1)
         sorted (9,1) , (1,2) , (5,3)
         
-        Also color and colors were taken so we use english key for this following loop, 
-        I didn't Use i and j because I wanted it to be transparent what is happening in the loop. Hopefully it is easier to follow than write.
+       
+        I didn't Use i and j because it needs to be key for that lamda sort. Hopefully it is easier to follow than write.
+        For information on the sorts check these two websites, they had useful info, especially the first one.
+        https://docs.python.org/3/howto/sorting.html
+        https://stackoverflow.com/questions/3766633/how-to-sort-with-lambda-in-python
         """
         for key in sorted(list(lockedPositions), key = lambda x: x[1])[::-1]: #Definitely had to look this up, converted it to work with our variables and matrix based data, that lambda stuff is funky. Probably best to not touch, convert things to work with this not vise verse
             x,y = key #Because key is a touple because of our 2D Matrix
@@ -384,13 +385,13 @@ def clearRows(grid, lockedPositions):
             
 
 def drawNextShape(shape, surface):
-    textSurfaceObj = fontObj.render('Next Shape', True, (255, 255, 255))
+    textSurfaceObj = fontObj.render('Next', True, (255, 255, 255))#Next Shape wouldn't fit, changed to Next
    
     
     nextPieceX = topLeftOfPlayX + playWidth + 50
     nextPieceY = playHeight // 2 - 75
     
-    surface.blit(textSurfaceObj, (nextPieceX, nextPieceY))#Prints out Next Shape in white 8-bit letter
+    surface.blit(textSurfaceObj, (nextPieceX +20, nextPieceY))#Prints out Next Shape in white 8-bit letter
     
     form = shape.shape[shape.rotation % len(shape.shape)] #Same line as in convert shape, See that for Documentation
     

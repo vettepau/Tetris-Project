@@ -193,7 +193,7 @@ def main(screen):
     while run:
         fallCheck = 0.30/fastFall #should divide by 2 during fast fall, doubling speed
         grid = createGrid(lockedPositions) #Called because we need to update the grid BEFORE ANYTHING ELSE
-        fallTime += clock.get_rawtime() #Adds how much time has passed since last click
+        fallTime += clock.get_rawtime() #Adds how much time has passed since last tick
         clock.tick() # Resets the raw time for next fall time update. 
         
         if fallTime / 1000 > fallCheck:  # in ms so divide by 1000

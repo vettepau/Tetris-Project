@@ -23,6 +23,10 @@ Using Tetris-Architecture.html for guidance and resources
 """
 Created on Fri Oct 30 13:56:26 2020
 
+# -*- coding: utf-8 -*-
+
+Created on Fri Oct 30 13:56:26 2020
+
 @author: setht
 """
 
@@ -131,7 +135,7 @@ L = [['00000',
      ['00000',
       '00000',
       '01110',
-      '0110',
+      '01000',
       '00000'],
      ['00000',
       '01100',
@@ -371,14 +375,14 @@ def clearRows(grid, lockedPositions):
         unsorted (1,2) , (5,3) (9,1)
         sorted (9,1) , (1,2) , (5,3)
         
-        Also color and colors were taken so we use english colour for this following loop, 
+        Also color and colors were taken so we use english key for this following loop, 
         I didn't Use i and j because I wanted it to be transparent what is happening in the loop. Hopefully it is easier to follow than write.
         """
-        for colour in sorted(list(lockedPositions), colour = lambda x: x[1])[::-1]: #Definitely had to look this up, converted it to work with our variables and matrix based data, that lambda stuff is funky. Probably best to not touch, convert things to work with this not vise verse
-            x,y = colour #Because colour is a touple because of our 2D Matrix
+        for key in sorted(list(lockedPositions), key = lambda x: x[1])[::-1]: #Definitely had to look this up, converted it to work with our variables and matrix based data, that lambda stuff is funky. Probably best to not touch, convert things to work with this not vise verse
+            x,y = key #Because key is a touple because of our 2D Matrix
             if y < remember:
-                newColour = (x, y + count)
-                lockedPositions[newColour] = lockedPositions.pop(colour)
+                newkey = (x, y + count)
+                lockedPositions[newkey] = lockedPositions.pop(key)
             
 
 def drawNextShape(shape, surface):

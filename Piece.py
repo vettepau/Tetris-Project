@@ -14,7 +14,6 @@ The game will consist of 6 different classes:
 Using Tetris-Architecture.html for guidance and resources 
 '''
 
-'''
 import random
 
 class Piece:
@@ -115,5 +114,3 @@ class Piece:
         for p in Piece.body:
             out += '(' + p.x + ',' + p.y + ')'
         return out
-    
-'''

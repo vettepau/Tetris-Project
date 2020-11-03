@@ -298,7 +298,7 @@ def getShape():
 
 def convertShape(shape):
     positions = [] #new empty list
-    form = shape.shape[shape.rotation % len(shape.shape)] #Modulus allows us to cycle through rotations :) hope that helps you in your design, Pual
+    form = shape.shape[shape.rotation % len(shape.shape)] #Modulus allows us to cycle through rotations :) hope that helps you in your design, Paul
     
     for i, line in enumerate(form): #had a lot of fun with this one. Sarcasm = True
         row = list(line)

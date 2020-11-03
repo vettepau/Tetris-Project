@@ -17,6 +17,7 @@ Using Tetris-Architecture.html for guidance and resources
 
 # -*- coding: utf-8 -*-
 # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 Created on Fri Oct 30 13:56:26 2020
 
@@ -164,7 +165,7 @@ colors = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0),
 class Piece(object):
     x = 20
     y = 10
-    def initialize(self, x, y, shape):
+    def __init__(self, x, y, shape):
         self.x  = x
         self.y = y
         self.shape = shape
@@ -231,9 +232,8 @@ def main(screen):
         shapePosition = convertShape(currentPiece)
         
         for i in range(len(shapePosition)):
-            x = shapePosition.x[i]
-            y = shapePosition.y[i]
-            if y > -1:
+             x, y = shapePosition[i]
+             if y > -1:
                 grid[y][x] = currentPiece.color   #y,x not x,y. We are about learning from our mistakes.
         
         
@@ -294,7 +294,7 @@ def getShape():
 
 def convertShape(shape):
     positions = [] #new empty list
-    form = shape.shape[shape.rotaion % len(shape.shape)] #Modulus allows us to cycle through rotations :) hope that helps you in your design, Pual
+    form = shape.shape[shape.rotation % len(shape.shape)] #Modulus allows us to cycle through rotations :) hope that helps you in your design, Pual
     
     for i, line in enumerate(form): #had a lot of fun with this one. Sarcasm = True
         row = list(line)
@@ -327,7 +327,7 @@ def valid(shape, grid):
 
 def checkLost(positions):
     for position in positions: #Note Singular versus Plural, this is important !!!!!!!
-        y = position.y
+        x, y = positions
         if y < 1: #Checks to see if above screen
             return True  #Uh OH Thats A Game Over, Once we code that part...
         
@@ -342,9 +342,9 @@ def drawGrid(surface, grid):
     
     #Draws A Grid Of Lines
     for i in range(20):
-        pygame.draw.line(surface, (257, 257, 257), (topLeftOfPlayX, i * blockSize), (topLeftOfPlayX + playWidth, i * blockSize)) #Horizontal Line
+        pygame.draw.line(surface, (255, 255, 255), (topLeftOfPlayX, i * blockSize), (topLeftOfPlayX + playWidth, i * blockSize)) #Horizontal Line
         for j in range(10):
-             pygame.draw.line(surface, (257, 257, 257), (topLeftOfPlayX + j * blockSize, 0), (topLeftOfPlayX + j * blockSize, playHeight)) #vert lines
+             pygame.draw.line(surface, (255, 255, 255), (topLeftOfPlayX + j * blockSize, 0), (topLeftOfPlayX + j * blockSize, playHeight)) #vert lines
             
    
     
@@ -380,15 +380,15 @@ def clearRows(grid, lockedPositions):
             
 
 def drawNextShape(shape, surface):
-    textSurfaceObj = fontObj.render('Next Shape', True, (257, 257, 257))
+    textSurfaceObj = fontObj.render('Next Shape', True, (255, 255, 255))
    
     
     nextPieceX = topLeftOfPlayX + playWidth + 50
     nextPieceY = playHeight // 2 - 75
     
-    surface.blit(textSurfaceObj, nextPieceX, nextPieceY)#Prints out Next Shape in white 8-bit letter
+    surface.blit(textSurfaceObj, (nextPieceX, nextPieceY))#Prints out Next Shape in white 8-bit letter
     
-    form = shape.shape[shape.rotaion % len(shape.shape)] #Same line as in convert shape, See that for Documentation
+    form = shape.shape[shape.rotation % len(shape.shape)] #Same line as in convert shape, See that for Documentation
     
     for i, line in enumerate(form):
         row = list(line)
@@ -400,8 +400,8 @@ def drawNextShape(shape, surface):
 
 def drawWindow(surface, grid):
     surface.fill((0,0,0))
-    textSurfaceObj = fontObj.render('Tetris', True, (257, 257, 257))
-    surface.blit(textSurfaceObj, 0,0)#Prints out Tertirs in white 8-bit letters
+    textSurfaceObj = fontObj.render('Tetris', True, (255, 255, 255) )
+    surface.blit(textSurfaceObj,( 40,30))#Prints out Tertirs in white 8-bit letters
     
     for i in range(20):
         for j in range(10):

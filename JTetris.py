@@ -19,6 +19,7 @@ Using Tetris-Architecture.html for guidance and resources
 # -*- coding: utf-8 -*-
 # -*- coding: utf-8 -*-
 # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 Created on Fri Oct 30 13:56:26 2020
 

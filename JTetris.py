@@ -18,6 +18,7 @@ Using Tetris-Architecture.html for guidance and resources
 # -*- coding: utf-8 -*-
 # -*- coding: utf-8 -*-
 # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 Created on Fri Oct 30 13:56:26 2020
 
@@ -327,7 +328,7 @@ def valid(shape, grid):
 
 def checkLost(positions):
     for position in positions: #Note Singular versus Plural, this is important !!!!!!!
-        x, y = positions
+        x, y = position
         if y < 1: #Checks to see if above screen
             return True  #Uh OH Thats A Game Over, Once we code that part...
         

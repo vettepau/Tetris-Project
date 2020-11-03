@@ -16,6 +16,7 @@ Using Tetris-Architecture.html for guidance and resources
 '''
 
 # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 Created on Fri Oct 30 13:56:26 2020
 
@@ -28,7 +29,7 @@ import random
 #Intialize
 pygame.init()
 
-clock = pygame.time.clock()
+clock = pygame.time.Clock()
 
 #Global Variables
 windowWidth = 800
@@ -161,6 +162,8 @@ colors = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0),
 
 
 class Piece(object):
+    x = 20
+    y = 10
     def initialize(self, x, y, shape):
         self.x  = x
         self.y = y
@@ -168,6 +171,7 @@ class Piece(object):
         self.color = colors[shapes.index(shape)] # Returns the color of the shape being passed
         self.rotation = 0 #Defaulted to 0, will incremint when up arrow is pressed, number will refrence which grid to display.
 
+    
 
 def main(screen):
     lockedPositions = {} #Initialize Locked Postitions as a blank dictionary
@@ -176,7 +180,7 @@ def main(screen):
     changePiece = False #default this false or else itll constantly change pieces, will use this as a check later to know when to change piece.
     run = True #Initialize run for our while loop later, game will run while thise is true, stop when false.
     
-    clock = pygame.time.clock()# Sarahs clock that actually ended up being needed for controlling the falling piece
+    clock = pygame.time.Clock()# Sarahs clock that actually ended up being needed for controlling the falling piece
     fallTime = 0 #Will be refrenced later to controll when the piece drops.
     
     currentPiece = getShape() #Literally the only remaining part of the original code other than the window, changed to fit the getShape Method.
@@ -278,7 +282,9 @@ def createGrid(lockedPositions = {}):
 
 
 def getShape():
-    return Piece(5 ,0,  random.choice(shapes))
+    global shapes, colors
+
+    return Piece(5, 0, random.choice(shapes))
     """
     Passes an object into the piece class and return the corrisponding set of values.
     Object values passed are x, y, shape

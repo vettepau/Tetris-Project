@@ -6,7 +6,6 @@ Engr 102 final project
 
 The game will consist of 6 different classes:
     Piece - a single tetris peice 
-    Board - the tetris board
     JTetris - present the GUI for tetris in a window and do animation
     Brain - simple heuristic logic that knows how to play the tetris
     JBrainTetris - a subclass of JTetris that uses a brain to play the game w/ out a human player
@@ -42,7 +41,7 @@ clock = pygame.time.Clock()
 windowWidth = 800
 windowHeight = 600
 playWidth = 300  # meaning 300 // 10 = 30 width per block
-playHeight = 600  # meaning 600 // 20 = 20 height per blo ck
+playHeight = 600  # meaning 600 // 20 = 20 height per block
 blockSize = 30
 topLeftOfPlayX = (windowWidth - playWidth) // 2
 
@@ -178,7 +177,6 @@ class Piece(object):
         self.color = colors[shapes.index(shape)] # Returns the color of the shape being passed
         self.rotation = 0 #Defaulted to 0, will incremint when up arrow is pressed, number will refrence which grid to display.
 
-    
 
 def main(screen):
     lockedPositions = {} #Initialize Locked Postitions as a blank dictionary

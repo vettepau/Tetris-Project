@@ -44,7 +44,7 @@ pygame.init()
 clock = pygame.time.Clock()
 
 #Global Variables
-score = 0
+score = 0 #Initialized to be 0 for new game.
 windowWidth = 800
 windowHeight = 600
 playWidth = 300  # meaning 300 // 10 = 30 width per block
@@ -370,7 +370,13 @@ def clearRows(grid, lockedPositions ):
                 except:
                     continue #Im pretty sure we needed a try as part of our grade, this was the best spot I could think of
     
-    
+    """
+    To Paul,
+    If you dont understand how python handles Global variable refrence and how we keep the function from 
+    creating its own local variable, these two links might help give insight. - Seth
+    https://www.python-course.eu/python3_global_vs_local_variables.php
+    https://stackoverflow.com/questions/10506973/can-not-increment-global-variable-from-function-in-python
+    """
     global score#DO NOT REMOVE, This is needed or else it keeps trying to create a local variable score and the whole things crashes when you clear a line
     
     if count > 0: #Meaning we cleared at least one line

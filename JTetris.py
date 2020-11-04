@@ -20,11 +20,21 @@ Using Tetris-Architecture.html for guidance and resources
 # -*- coding: utf-8 -*-
 # -*- coding: utf-8 -*-
 """
-Created on Fri Oct 30 13:56:26 2020
-
-@author: setht
+Instructions
+left arrow or a key moves piece left
+right arrow or d key moves piece right
+up arrow or w key rotates piece
+holding down the down arrow or s key will cause the piece to fall twice as fast
 """
 
+"""
+Things still left to do:
+Add a function that lets you store a piece
+Add the music to the game
+Add a Menu Before the Game Starts
+Add an AI to play and get better at the game.
+
+"""
 import pygame
 import random
 
@@ -46,7 +56,7 @@ topLeftOfPlayX = (windowWidth - playWidth) // 2
 fontObj = pygame.font.Font('8-BIT WONDER.ttf', 30)
 
 #creates Window 800 X 600
-screen = pygame.display.set_mode((windowWidth, windowHeight))
+screen = pygame.display.set_mode((windowWidth, windowHeight)) #Named it screen as nostalgia from the Java Days. 
 pygame.display.set_caption("Aggie Land Tetris!")
 windowIcon = pygame.image.load("Texas A&M Logo.png")
 pygame.display.set_icon(windowIcon)
@@ -164,14 +174,14 @@ colors = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0),
 
 
 class Piece(object):
-    x = 20
-    y = 10
-    def __init__(self, x, y, shape):
+   # x = 20
+    #y = 10
+    def __init__(self, x, y, shape): #self is like this from java, funny enough turns out you can do other words not self, but to keep it easy for Dr. Ritchey to Grade I say we keep it as self.
         self.x  = x
         self.y = y
         self.shape = shape
         self.color = colors[shapes.index(shape)] # Returns the color of the shape being passed
-        self.rotation = 0 #Defaulted to 0, will incremint when up arrow is pressed, number will refrence which grid to display.
+        self.rotation = 0 #Defaulted to 0, will incremint when up arrow is pressed, number will refrence which list to display.
 
     
 
@@ -186,7 +196,7 @@ def main(screen):
     fallTime = 0 #Will be refrenced later to controll when the piece drops.
     
     currentPiece = getShape() #Literally the only remaining part of the original code other than the window, changed to fit the getShape Method.
-    nextPiece = getShape()
+    nextPiece = getShape() #A benifit of this I just noticed is we only have to keep track of two sets of self. keeps memory relatively free. Only two objectives of the shape Class. 
     fastFall = 1
     
     #THE GAME LOOP, AS FROM THE ORIGINAL BUILD, BEFORE EVERYTHING WENT BAD
@@ -389,7 +399,7 @@ def drawNextShape(shape, surface):
    
     
     nextPieceX = topLeftOfPlayX + playWidth + 50
-    nextPieceY = playHeight // 2 - 75
+    nextPieceY = playHeight // 2 - 270
     
     surface.blit(textSurfaceObj, (nextPieceX +20, nextPieceY))#Prints out Next Shape in white 8-bit letter
     
@@ -400,13 +410,18 @@ def drawNextShape(shape, surface):
         for j, column in enumerate(row):
             if column == "1":
                 #Rather than add postion, which we care not for, we will draw it, simmilar to the line in the drawWindow method below. wave at it, its a friend.
-                pygame.draw.rect(surface, shape.color, (nextPieceX + j * blockSize, nextPieceY + i*blockSize, blockSize, blockSize), 0) 
+                pygame.draw.rect(surface, shape.color, (nextPieceX + j * blockSize, nextPieceY + i*blockSize + 45, blockSize, blockSize), 0) 
     
 
 def drawWindow(surface, grid):
-    surface.fill((0,0,0))
-    textSurfaceObj = fontObj.render('Tetris', True, (255, 255, 255) )
-    surface.blit(textSurfaceObj,( 40,30))#Prints out Tertirs in white 8-bit letters
+    surface.fill((67,0,48))
+    
+    """""
+    Put in Draw window for now, need to make a draw score Function When we implement Score.
+    """""
+    textSurfaceObj = fontObj.render('Score', True, (255, 255, 255) )
+    surface.blit(textSurfaceObj,( 40,30))#Prints out Score in white 8-bit letters
+    
     
     for i in range(20):
         for j in range(10):
@@ -421,8 +436,8 @@ def drawWindow(surface, grid):
     
 
 
-def mainMenu(screen):
-    main(screen) #Passes ffrom the window that was created and passed to main menu
+def mainMenu(screen): 
+    main(screen) #Passes from the window that was created and passed to main menu
     
 
 mainMenu(screen)  # Runs to start the game

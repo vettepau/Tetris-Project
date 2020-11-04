@@ -29,6 +29,7 @@ holding down the down arrow or s key will cause the piece to fall twice as fast
 
 """
 Things still left to do:
+Add score to the game
 Add a function that lets you store a piece
 Add the music to the game
 Add a Menu Before the Game Starts

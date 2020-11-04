@@ -29,8 +29,7 @@ holding down the down arrow or s key will cause the piece to fall twice as fast
 
 """
 Things still left to do:
-Add score to the game
-Add a function that lets you store a piece
+Add a function that lets you stor a piece
 Add the music to the game
 Add a Menu Before the Game Starts
 Add an AI to play and get better at the game.
@@ -45,6 +44,7 @@ pygame.init()
 clock = pygame.time.Clock()
 
 #Global Variables
+score = 0
 windowWidth = 800
 windowHeight = 600
 playWidth = 300  # meaning 300 // 10 = 30 width per block
@@ -190,6 +190,9 @@ def main(screen):
     lockedPositions = {} #Initialize Locked Postitions as a blank dictionary
     grid = createGrid(lockedPositions) #Passes the dictionary into our method 
     
+    
+    
+    
     changePiece = False #default this false or else itll constantly change pieces, will use this as a check later to know when to change piece.
     run = True #Initialize run for our while loop later, game will run while thise is true, stop when false.
     
@@ -269,6 +272,8 @@ def main(screen):
         
         drawWindow(screen, grid)
         drawNextShape(nextPiece, screen)
+        drawScore(screen)
+        
         pygame.display.update()
         
         if  checkLost(lockedPositions): #We pass locked positions because they will contain all positions.
@@ -348,21 +353,9 @@ def checkLost(positions):
     return False #you may live, for now -_-
         
 
-
-
-   
-def drawGrid(surface, grid):
-    
-    #Draws A Grid Of Lines
-    for i in range(20):
-        pygame.draw.line(surface, (255, 255, 255), (topLeftOfPlayX, i * blockSize), (topLeftOfPlayX + playWidth, i * blockSize)) #Horizontal Line
-        for j in range(10):
-             pygame.draw.line(surface, (255, 255, 255), (topLeftOfPlayX + j * blockSize, 0), (topLeftOfPlayX + j * blockSize, playHeight)) #vert lines
-            
-   
     
 
-def clearRows(grid, lockedPositions):
+def clearRows(grid, lockedPositions ):
     #ALot harder than I though because of gravity, but I think I found a useful method, need to Test with Puals Shapes.
     
     count = 0
@@ -376,7 +369,23 @@ def clearRows(grid, lockedPositions):
                     del lockedPositions[(j,i)] #the current position
                 except:
                     continue #Im pretty sure we needed a try as part of our grade, this was the best spot I could think of
+    
+    
+    global score#DO NOT REMOVE, This is needed or else it keeps trying to create a local variable score and the whole things crashes when you clear a line
+    
     if count > 0: #Meaning we cleared at least one line
+    #Score increase from clearing lines
+        if count == 1:
+            score += 100
+        if count == 2:
+            score += 250
+        if count == 3:
+            score += 400
+        if count == 4:
+            score += 600
+    
+    
+    
         """"
         This next line basically sorts elements of the list be their Y values, it's a bit trippy and weird to explain but it works like this
         unsorted (1,2) , (5,3) (9,1)
@@ -394,6 +403,18 @@ def clearRows(grid, lockedPositions):
                 newkey = (x, y + count)
                 lockedPositions[newkey] = lockedPositions.pop(key)
             
+        return score
+
+def drawGrid(surface, grid):
+    
+    #Draws A Grid Of Lines
+    for i in range(20):
+        pygame.draw.line(surface, (255, 255, 255), (topLeftOfPlayX, i * blockSize), (topLeftOfPlayX + playWidth, i * blockSize)) #Horizontal Line
+        for j in range(10):
+             pygame.draw.line(surface, (255, 255, 255), (topLeftOfPlayX + j * blockSize, 0), (topLeftOfPlayX + j * blockSize, playHeight)) #vert lines
+            
+   
+
 
 def drawNextShape(shape, surface):
     textSurfaceObj = fontObj.render('Next', True, (255, 255, 255))#Next Shape wouldn't fit, changed to Next
@@ -416,14 +437,7 @@ def drawNextShape(shape, surface):
 
 def drawWindow(surface, grid):
     surface.fill((67,0,48))
-    
-    """""
-    Put in Draw window for now, need to make a draw score Function When we implement Score.
-    """""
-    textSurfaceObj = fontObj.render('Score', True, (255, 255, 255) )
-    surface.blit(textSurfaceObj,( 40,30))#Prints out Score in white 8-bit letters
-    
-    
+     
     for i in range(20):
         for j in range(10):
             #Draws onto surface the color of grid[i][j], at the correct position, height and width of the draw, and the 0 at the end to make sure it filles the draw, without it it only draws borders
@@ -435,6 +449,19 @@ def drawWindow(surface, grid):
     
     drawGrid(surface, grid) #Calls the draw grid method, to draw the grid 
     
+
+def drawScore(surface):
+     textSurfaceObj = fontObj.render('Score', True, (255, 255, 255) )
+     surface.blit(textSurfaceObj,( 40,30))#Prints out Score in white 8-bit letters
+     
+     #Format where the score is drawn based on its length
+     digits = 0
+     holder = score
+     while holder >= 10:
+         holder = holder // 10
+         digits += 1
+     textSurfaceObj = fontObj.render(str(score), True, (255, 255, 255) )
+     surface.blit(textSurfaceObj,( 100 - digits * 12.5 ,80))
 
 
 def mainMenu(screen): 

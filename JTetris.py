@@ -44,7 +44,6 @@ clock = pygame.time.Clock()
 
 #Global Variables
 score = 0 #Initialized to be 0 for new game.
-global highscore
 windowWidth = 800
 windowHeight = 600
 playWidth = 300  # meaning 300 // 10 = 30 width per block
@@ -55,7 +54,8 @@ topLeftOfPlayX = (windowWidth - playWidth) // 2
 
 #Create font Object
 fontObj = pygame.font.Font('8-BIT WONDER.ttf', 30)
-fontObjSmall = pygame.font.Font('8-BIT WONDER.ttf', 15)
+fontObjSmall = pygame.font.Font('8-BIT WONDER.ttf', 20)
+fontObjSmallest = pygame.font.Font('8-BIT WONDER.ttf', 15)
 #creates Window 800 X 600
 screen = pygame.display.set_mode((windowWidth, windowHeight)) #Named it screen as nostalgia from the Java Days. 
 pygame.display.set_caption("Aggie Land Tetris!")
@@ -64,7 +64,8 @@ pygame.display.set_icon(windowIcon)
 
 high = open('High Score.txt', 'r')
 leader = high.readline()
-highscore = int(high.readline())
+highscore = high.readline()
+player1 = leader + ' ' + highscore
 high.close()
 
 """
@@ -472,17 +473,13 @@ def drawScore(surface):
      surface.blit(textSurfaceObj,( 100 - digits * 12.5 ,380))
 
 def drawHighScore(surface):
-     textSurfaceObj = fontObjSmall.render('High Score', True, (255, 255, 255) )
-     surface.blit(textSurfaceObj,( 30,30))#Prints out Score in white 8-bit letters
+     textSurfaceObj = fontObjSmall.render('Leaderboard', True, (255, 255, 255) )
+     surface.blit(textSurfaceObj,(15,30))#Prints out Score in white 8-bit letters
      
      #Format where the score is drawn based on its length
-     digits = 0
-     holder = highscore
-     while holder >= 10:
-         holder = holder // 10
-         digits += 1
-     textSurfaceObj = fontObjSmall.render(str(highscore), True, (255, 255, 255) )
-     surface.blit(textSurfaceObj,( 100 - digits * 12.5 ,80))
+     digits = len(player1)
+     textSurfaceObj = fontObjSmallest.render(player1, True, (255, 255, 255) )
+     surface.blit(textSurfaceObj,(180 - digits * 12.5,80))
 
 def mainMenu(screen): 
     main(screen) #Passes from the window that was created and passed to main menu

@@ -23,11 +23,11 @@ left arrow or a key moves piece left
 right arrow or d key moves piece right
 up arrow or w key rotates piece
 holding down the down arrow or s key will cause the piece to fall twice as fast
+Press Space to store a piece once per turn.
 """
 
 """
 Things still left to do:
-Add a function that lets you stor a piece
 Add the music to the game
 Add a Menu Before the Game Starts
 Add an AI to play and get better at the game.

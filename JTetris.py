@@ -45,6 +45,7 @@ clock = pygame.time.Clock()
 
 #Global Variables
 score = 0 #Initialized to be 0 for new game.
+global highscore
 windowWidth = 800
 windowHeight = 600
 playWidth = 300  # meaning 300 // 10 = 30 width per block
@@ -62,7 +63,10 @@ pygame.display.set_caption("Aggie Land Tetris!")
 windowIcon = pygame.image.load("Texas A&M Logo.png")
 pygame.display.set_icon(windowIcon)
 
-
+high = open('High Score.txt', 'r')
+leader = high.readline()
+highscore = int(high.readline())
+high.close()
 
 """
 Lists currently empty unitl Paul creates the shape grids, need to make sure the order is correct, and that we match the 
@@ -191,8 +195,6 @@ def main(screen):
     grid = createGrid(lockedPositions) #Passes the dictionary into our method 
     
     
-    
-    
     changePiece = False #default this false or else itll constantly change pieces, will use this as a check later to know when to change piece.
     run = True #Initialize run for our while loop later, game will run while thise is true, stop when false.
     
@@ -273,6 +275,7 @@ def main(screen):
         drawWindow(screen, grid)
         drawNextShape(nextPiece, screen)
         drawScore(screen)
+        drawHighScore(screen)
         
         pygame.display.update()
         
@@ -469,6 +472,18 @@ def drawScore(surface):
      textSurfaceObj = fontObj.render(str(score), True, (255, 255, 255) )
      surface.blit(textSurfaceObj,( 100 - digits * 12.5 ,380))
 
+def drawHighScore(surface):
+     textSurfaceObj = fontObj.render('High Score', True, (255, 255, 255) )
+     surface.blit(textSurfaceObj,( 40,30))#Prints out Score in white 8-bit letters
+     
+     #Format where the score is drawn based on its length
+     digits = 0
+     holder = highscore
+     while holder >= 10:
+         holder = holder // 10
+         digits += 1
+     textSurfaceObj = fontObj.render(str(highscore), True, (255, 255, 255) )
+     surface.blit(textSurfaceObj,( 100 - digits * 12.5 ,80))
 
 def mainMenu(screen): 
     main(screen) #Passes from the window that was created and passed to main menu

@@ -458,7 +458,7 @@ def drawWindow(surface, grid):
 
 def drawScore(surface):
      textSurfaceObj = fontObj.render('Score', True, (255, 255, 255) )
-     surface.blit(textSurfaceObj,( 40,30))#Prints out Score in white 8-bit letters
+     surface.blit(textSurfaceObj,( 40,330))#Prints out Score in white 8-bit letters
      
      #Format where the score is drawn based on its length
      digits = 0
@@ -467,7 +467,7 @@ def drawScore(surface):
          holder = holder // 10
          digits += 1
      textSurfaceObj = fontObj.render(str(score), True, (255, 255, 255) )
-     surface.blit(textSurfaceObj,( 100 - digits * 12.5 ,80))
+     surface.blit(textSurfaceObj,( 100 - digits * 12.5 ,380))
 
 
 def mainMenu(screen): 

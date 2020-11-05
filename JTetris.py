@@ -205,7 +205,7 @@ def main(screen):
     
     #THE GAME LOOP, AS FROM THE ORIGINAL BUILD, BEFORE EVERYTHING WENT BAD
     while run:
-        fallCheck = 0.30/fastFall #should divide by 2 during fast fall, doubling speed
+        fallCheck = 0.30/fastFall #should divide by fast fall, speed * fastFall during fast fall
         grid = createGrid(lockedPositions) #Called because we need to update the grid BEFORE ANYTHING ELSE
         fallTime += clock.get_rawtime() #Adds how much time has passed since last tick
         clock.tick() # Resets the raw time for next fall time update. 
@@ -236,7 +236,7 @@ def main(screen):
                         currentPiece.x += -1 #Oppisite of the movement from key
                         
                 if event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                    fastFall = 2
+                    fastFall = 7 #The higher this number the faster the fall
                 
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
                     currentPiece.rotation += 1 #Changes the rotation cycles the layouts of shape. 

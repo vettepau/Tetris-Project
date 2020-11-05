@@ -33,7 +33,6 @@ Add a function that lets you stor a piece
 Add the music to the game
 Add a Menu Before the Game Starts
 Add an AI to play and get better at the game.
-
 """
 import pygame
 import random
@@ -56,7 +55,7 @@ topLeftOfPlayX = (windowWidth - playWidth) // 2
 
 #Create font Object
 fontObj = pygame.font.Font('8-BIT WONDER.ttf', 30)
-
+fontObjSmall = pygame.font.Font('8-BIT WONDER.ttf', 15)
 #creates Window 800 X 600
 screen = pygame.display.set_mode((windowWidth, windowHeight)) #Named it screen as nostalgia from the Java Days. 
 pygame.display.set_caption("Aggie Land Tetris!")
@@ -473,8 +472,8 @@ def drawScore(surface):
      surface.blit(textSurfaceObj,( 100 - digits * 12.5 ,380))
 
 def drawHighScore(surface):
-     textSurfaceObj = fontObj.render('High Score', True, (255, 255, 255) )
-     surface.blit(textSurfaceObj,( 40,30))#Prints out Score in white 8-bit letters
+     textSurfaceObj = fontObjSmall.render('High Score', True, (255, 255, 255) )
+     surface.blit(textSurfaceObj,( 30,30))#Prints out Score in white 8-bit letters
      
      #Format where the score is drawn based on its length
      digits = 0
@@ -482,7 +481,7 @@ def drawHighScore(surface):
      while holder >= 10:
          holder = holder // 10
          digits += 1
-     textSurfaceObj = fontObj.render(str(highscore), True, (255, 255, 255) )
+     textSurfaceObj = fontObjSmall.render(str(highscore), True, (255, 255, 255) )
      surface.blit(textSurfaceObj,( 100 - digits * 12.5 ,80))
 
 def mainMenu(screen): 

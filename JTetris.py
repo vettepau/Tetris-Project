@@ -61,11 +61,23 @@ windowIcon = pygame.image.load("Texas A&M Logo.png")
 pygame.display.set_icon(windowIcon)
 
 high = open('High Score.txt', 'r')
-leader = high.readline()
-leader = leader.strip()
-highscore = high.readline()
-player1 = leader + ' ' + highscore
-high.close()
+player1Name = high.readline().strip()
+player1Score = high.readline().strip()
+
+
+player2Name = high.readline().strip()
+player2Score = high.readline().strip()
+
+
+player3Name = high.readline().strip()
+player3Score = high.readline().strip()
+
+
+player4Name = high.readline().strip()
+player4Score = high.readline()
+
+
+
 
 """
 Lists currently empty unitl Paul creates the shape grids, need to make sure the order is correct, and that we match the 
@@ -210,6 +222,7 @@ def main(screen):
     
     #THE GAME LOOP, AS FROM THE ORIGINAL BUILD, BEFORE EVERYTHING WENT BAD
     while run:
+        
         fallCheck = 0.30/fastFall #should divide by fast fall, speed * fastFall during fast fall
         grid = createGrid(lockedPositions) #Called because we need to update the grid BEFORE ANYTHING ELSE
         fallTime += clock.get_rawtime() #Adds how much time has passed since last tick
@@ -303,6 +316,9 @@ def main(screen):
     
     #Need this or the kernel will die when the window closes, or game over. 
     #Really whenever we exit the game loop. But ITS IMPORTANT SO REMEMBER KEEP THIS AS LAST LINE AFTER THE GAME LOOP
+    
+ 
+    high.close()
     pygame.display.quit()     
         
    
@@ -389,6 +405,8 @@ def clearRows(grid, lockedPositions ):
                     del lockedPositions[(j,i)] #the current position
                 except:
                     continue #Im pretty sure we needed a try as part of our grade, this was the best spot I could think of
+            
+            
     
     """
     To Paul,
@@ -430,7 +448,10 @@ def clearRows(grid, lockedPositions ):
             if y < remember:
                 newkey = (x, y + count)
                 lockedPositions[newkey] = lockedPositions.pop(key)
-            
+        
+        #DO NOT DO THE FOLLOWING LINE, CRASHES CODE. THE ERROR IS RARE AND NON GAME BREAKING, LEAVE IT FOR NOW AND IF WE HAVE TIME TRY TO FIX IT.
+        #clearRows(grid, lockedPositions)#Testing out this reccursion, theres a weird glitch where sometimes when multiple line clears occour than are unconcurerent lines. Reccurive calls on succesful clears should help.  
+        
         return score
 
 def drawGrid(surface, grid):
@@ -483,7 +504,7 @@ def drawStoredShape(surface, shape, check):
                     pygame.draw.rect(surface, shape.color, (storedPieceX + j * blockSize, storedPieceY + i*blockSize + 45, blockSize, blockSize), 0)
 
 def drawWindow(surface, grid):
-    surface.fill((67,0,48))
+    surface.fill((67,0,48)) #Draws the maroon background.
      
     for i in range(20):
         for j in range(10):
@@ -515,9 +536,27 @@ def drawHighScore(surface):
      surface.blit(textSurfaceObj,(15,30))#Prints out Score in white 8-bit letters
      
      #Format where the score is drawn based on its length
-     digits = len(player1)
-     textSurfaceObj = fontObjSmallest.render(player1, True, (255, 255, 255) )
-     surface.blit(textSurfaceObj,(180 - digits * 12.5,80))
+     
+     textSurfaceObj = fontObjSmallest.render(player1Name, True, (255, 255, 255) )
+     surface.blit(textSurfaceObj,(15,80))
+     textSurfaceObj = fontObjSmallest.render(player1Score, True, (255, 255, 255) )
+     surface.blit(textSurfaceObj,(95,80))
+    
+     textSurfaceObj = fontObjSmallest.render(player2Name, True, (255, 255, 255) )
+     surface.blit(textSurfaceObj,(15,100))
+     textSurfaceObj = fontObjSmallest.render(player2Score, True, (255, 255, 255) )
+     surface.blit(textSurfaceObj,(95,100))
+     
+     textSurfaceObj = fontObjSmallest.render(player3Name, True, (255, 255, 255) )
+     surface.blit(textSurfaceObj,(15,120))
+     textSurfaceObj = fontObjSmallest.render(player3Score, True, (255, 255, 255) )
+     surface.blit(textSurfaceObj,(95,120))
+     
+     textSurfaceObj = fontObjSmallest.render(player4Name, True, (255, 255, 255) )
+     surface.blit(textSurfaceObj,(15,140))
+     textSurfaceObj = fontObjSmallest.render(player4Score, True, (255, 255, 255) )
+     surface.blit(textSurfaceObj,(95,140))
+
 
 def mainMenu(screen): 
     main(screen) #Passes from the window that was created and passed to main menu

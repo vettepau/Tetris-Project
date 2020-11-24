@@ -1,2 +1,8 @@
+Seth
+33600
 Paul
-6250
+8600
+Sarah
+650
+Anna
+50

@@ -76,9 +76,8 @@ player3Score = high.readline().strip()
 player4Name = high.readline().strip()
 player4Score = high.readline()
 
-
-
-
+newName = ''
+high.close()
 """
 Lists currently empty unitl Paul creates the shape grids, need to make sure the order is correct, and that we match the 
 order of the shapes with the order of the colors. This will be passed into the piece class, also need his variable names.
@@ -260,6 +259,7 @@ def main(screen):
                     if not isStored:
                         storedPiece = currentPiece
                         currentPiece = nextPiece
+                        nextPiece = getShape()
                         storedThisTurn = True
                         isStored = True
                     elif not storedThisTurn:
@@ -303,24 +303,76 @@ def main(screen):
         #Our Draw Method Calls
         
         drawWindow(screen, grid)
+        drawStoredShape(screen, storedPiece, isStored)
         drawNextShape(nextPiece, screen)
         drawScore(screen)
         drawHighScore(screen)
-        drawStoredShape(screen, storedPiece, isStored)
+        
         
         pygame.display.update()
         
         if  checkLost(lockedPositions): #We pass locked positions because they will contain all positions.
             run = False #Will exit the game Loop, the While Loop.
     
+      
     
-    #Need this or the kernel will die when the window closes, or game over. 
-    #Really whenever we exit the game loop. But ITS IMPORTANT SO REMEMBER KEEP THIS AS LAST LINE AFTER THE GAME LOOP
+    if int(score) >= int(player4Score):
+        newHighScore(screen)
+        newHigh = open('High Score.txt', 'w')
+        if int(score) >= int(player1Score): #New First Place
+            newHigh.write(newName+"\n")
+            newHigh.write(str(score)+"\n")
+            
+            newHigh.write(player1Name+"\n")
+            newHigh.write(player1Score+"\n")
+            
+            newHigh.write(player2Name+"\n")
+            newHigh.write(player2Score+"\n")
+            
+            newHigh.write(player3Name+"\n")
+            newHigh.write(player3Score)
+            
+        elif int(score) >= int(player2Score):
+            newHigh.write(player1Name+"\n")
+            newHigh.write(player1Score+"\n")
+            
+            newHigh.write(newName+"\n")
+            newHigh.write(str(score)+"\n")
+            
+            newHigh.write(player2Name+"\n")
+            newHigh.write(player2Score+"\n")
+            
+            newHigh.write(player3Name+"\n")
+            newHigh.write(player3Score)
+            
+        elif int(score) >= int(player3Score):
+            newHigh.write(player1Name+"\n")
+            newHigh.write(player1Score+"\n")
+            
+            newHigh.write(player2Name+"\n")
+            newHigh.write(player2Score+"\n")
+            
+            newHigh.write(newName+"\n")
+            newHigh.write(str(score)+"\n")
+            
+            newHigh.write(player3Name+"\n")
+            newHigh.write(player3Score)
     
- 
-    high.close()
-    pygame.display.quit()     
-        
+        else:
+            newHigh.write(player1Name+"\n")
+            newHigh.write(player1Score+"\n")
+            
+            newHigh.write(player2Name+"\n")
+            newHigh.write(player2Score+"\n")
+            
+            newHigh.write(player3Name+"\n")
+            newHigh.write(player3Score+"\n")
+            
+            newHigh.write(newName+"\n")
+            newHigh.write(str(score))
+            
+        newHigh.close()
+     
    
     #End of Main Functon.
 
@@ -454,25 +506,25 @@ def clearRows(grid, lockedPositions ):
         
         return score
 
-def drawGrid(surface, grid):
+def drawGrid(screen, grid):
     
     #Draws A Grid Of Lines
     for i in range(20):
-        pygame.draw.line(surface, (255, 255, 255), (topLeftOfPlayX, i * blockSize), (topLeftOfPlayX + playWidth, i * blockSize)) #Horizontal Line
+        pygame.draw.line(screen, (255, 255, 255), (topLeftOfPlayX, i * blockSize), (topLeftOfPlayX + playWidth, i * blockSize)) #Horizontal Line
         for j in range(10):
-             pygame.draw.line(surface, (255, 255, 255), (topLeftOfPlayX + j * blockSize, 0), (topLeftOfPlayX + j * blockSize, playHeight)) #vert lines
+             pygame.draw.line(screen, (255, 255, 255), (topLeftOfPlayX + j * blockSize, 0), (topLeftOfPlayX + j * blockSize, playHeight)) #vert lines
             
    
 
 
-def drawNextShape(shape, surface):
-    textSurfaceObj = fontObj.render('Next', True, (255, 255, 255))#Next Shape wouldn't fit, changed to Next
+def drawNextShape(shape, screen):
+    textscreenObj = fontObj.render('Next', True, (255, 255, 255))#Next Shape wouldn't fit, changed to Next
    
     
     nextPieceX = topLeftOfPlayX + playWidth + 50
     nextPieceY = playHeight // 2 - 270
     
-    surface.blit(textSurfaceObj, (nextPieceX +20, nextPieceY))#Prints out Next Shape in white 8-bit letter
+    screen.blit(textscreenObj, (nextPieceX +20, nextPieceY))#Prints out Next Shape in white 8-bit letter
     
     form = shape.shape[shape.rotation % len(shape.shape)] #Same line as in convert shape, See that for Documentation
     
@@ -481,16 +533,16 @@ def drawNextShape(shape, surface):
         for j, column in enumerate(row):
             if column == "1":
                 #Rather than add postion, which we care not for, we will draw it, simmilar to the line in the drawWindow method below. wave at it, its a friend.
-                pygame.draw.rect(surface, shape.color, (nextPieceX + j * blockSize, nextPieceY + i*blockSize + 45, blockSize, blockSize), 0) 
+                pygame.draw.rect(screen, shape.color, (nextPieceX + j * blockSize, nextPieceY + i*blockSize + 45, blockSize, blockSize), 0) 
     
-def drawStoredShape(surface, shape, check):
-    textSurfaceObj = fontObj.render('Stored', True, (255, 255, 255))
+def drawStoredShape(screen, shape, check):
+    textscreenObj = fontObj.render('Stored', True, (255, 255, 255))
    
     
     storedPieceX = topLeftOfPlayX + playWidth + 50
     storedPieceY = playHeight // 2 + 30
     
-    surface.blit(textSurfaceObj, (storedPieceX - 10, storedPieceY))#Prints out stored in white 8-bit letter
+    screen.blit(textscreenObj, (storedPieceX - 10, storedPieceY))#Prints out stored in white 8-bit letter
 
     if check:
         
@@ -501,26 +553,26 @@ def drawStoredShape(surface, shape, check):
             for j, column in enumerate(row):
                 if column == "1":
                     #Rather than add postion, which we care not for, we will draw it, simmilar to the line in the drawWindow method below. wave at it, its a friend.
-                    pygame.draw.rect(surface, shape.color, (storedPieceX + j * blockSize, storedPieceY + i*blockSize + 45, blockSize, blockSize), 0)
+                    pygame.draw.rect(screen, shape.color, (storedPieceX + j * blockSize, storedPieceY + i*blockSize + 45, blockSize, blockSize), 0)
 
-def drawWindow(surface, grid):
-    surface.fill((67,0,48)) #Draws the maroon background.
+def drawWindow(screen, grid):
+    screen.fill((67,0,48)) #Draws the maroon background.
      
     for i in range(20):
         for j in range(10):
-            #Draws onto surface the color of grid[i][j], at the correct position, height and width of the draw, and the 0 at the end to make sure it filles the draw, without it it only draws borders
-            pygame.draw.rect(surface, grid[i][j], (topLeftOfPlayX + j * blockSize, i * blockSize, blockSize, blockSize), 0) 
+            #Draws onto screen the color of grid[i][j], at the correct position, height and width of the draw, and the 0 at the end to make sure it filles the draw, without it it only draws borders
+            pygame.draw.rect(screen, grid[i][j], (topLeftOfPlayX + j * blockSize, i * blockSize, blockSize, blockSize), 0) 
             
             
     
     
     
-    drawGrid(surface, grid) #Calls the draw grid method, to draw the grid 
+    drawGrid(screen, grid) #Calls the draw grid method, to draw the grid 
     
 
-def drawScore(surface):
-     textSurfaceObj = fontObj.render('Score', True, (255, 255, 255) )
-     surface.blit(textSurfaceObj,( 40,330))#Prints out Score in white 8-bit letters
+def drawScore(screen):
+     textscreenObj = fontObj.render('Score', True, (255, 255, 255) )
+     screen.blit(textscreenObj,( 40,330))#Prints out Score in white 8-bit letters
      
      #Format where the score is drawn based on its length
      digits = 0
@@ -528,38 +580,126 @@ def drawScore(surface):
      while holder >= 10:
          holder = holder // 10
          digits += 1
-     textSurfaceObj = fontObj.render(str(score), True, (255, 255, 255) )
-     surface.blit(textSurfaceObj,( 100 - digits * 12.5 ,380))
+     textscreenObj = fontObj.render(str(score), True, (255, 255, 255) )
+     screen.blit(textscreenObj,( 100 - digits * 12.5 ,380))
 
-def drawHighScore(surface):
-     textSurfaceObj = fontObjSmall.render('Leaderboard', True, (255, 255, 255) )
-     surface.blit(textSurfaceObj,(15,30))#Prints out Score in white 8-bit letters
+def drawHighScore(screen):
+     textscreenObj = fontObjSmall.render('Leaderboard', True, (255, 255, 255) )
+     screen.blit(textscreenObj,(15,30))#Prints out Score in white 8-bit letters
      
      #Format where the score is drawn based on its length
      
-     textSurfaceObj = fontObjSmallest.render(player1Name, True, (255, 255, 255) )
-     surface.blit(textSurfaceObj,(15,80))
-     textSurfaceObj = fontObjSmallest.render(player1Score, True, (255, 255, 255) )
-     surface.blit(textSurfaceObj,(95,80))
+     textscreenObj = fontObjSmallest.render(player1Name, True, (255, 255, 255) )
+     screen.blit(textscreenObj,(15,80))
+     textscreenObj = fontObjSmallest.render(player1Score, True, (255, 255, 255) )
+     screen.blit(textscreenObj,(95,80))
     
-     textSurfaceObj = fontObjSmallest.render(player2Name, True, (255, 255, 255) )
-     surface.blit(textSurfaceObj,(15,100))
-     textSurfaceObj = fontObjSmallest.render(player2Score, True, (255, 255, 255) )
-     surface.blit(textSurfaceObj,(95,100))
+     textscreenObj = fontObjSmallest.render(player2Name, True, (255, 255, 255) )
+     screen.blit(textscreenObj,(15,100))
+     textscreenObj = fontObjSmallest.render(player2Score, True, (255, 255, 255) )
+     screen.blit(textscreenObj,(95,100))
      
-     textSurfaceObj = fontObjSmallest.render(player3Name, True, (255, 255, 255) )
-     surface.blit(textSurfaceObj,(15,120))
-     textSurfaceObj = fontObjSmallest.render(player3Score, True, (255, 255, 255) )
-     surface.blit(textSurfaceObj,(95,120))
+     textscreenObj = fontObjSmallest.render(player3Name, True, (255, 255, 255) )
+     screen.blit(textscreenObj,(15,120))
+     textscreenObj = fontObjSmallest.render(player3Score, True, (255, 255, 255) )
+     screen.blit(textscreenObj,(95,120))
      
-     textSurfaceObj = fontObjSmallest.render(player4Name, True, (255, 255, 255) )
-     surface.blit(textSurfaceObj,(15,140))
-     textSurfaceObj = fontObjSmallest.render(player4Score, True, (255, 255, 255) )
-     surface.blit(textSurfaceObj,(95,140))
+     textscreenObj = fontObjSmallest.render(player4Name, True, (255, 255, 255) )
+     screen.blit(textscreenObj,(15,140))
+     textscreenObj = fontObjSmallest.render(player4Score, True, (255, 255, 255) )
+     screen.blit(textscreenObj,(95,140))
 
-
+def newHighScore(screen):
+    global newName
+    run = True
+    screen.fill((0,0,0))
+    while run:    
+        
+        textScreenObj = fontObjSmall.render('Enter Your Initials', True, (255, 255, 255) )
+        screen.blit(textScreenObj,(225,30))#Prints out Score in white 8-bit letters
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+                
+            if event.type == pygame.KEYDOWN:
+                #Oh Boy THis will be fun
+                if event.key == pygame.K_a:
+                    newName += "A"
+                if event.key == pygame.K_b:
+                    newName += "B"
+                if event.key == pygame.K_c:
+                    newName += "C"
+                if event.key == pygame.K_d:
+                    newName += "D"
+                if event.key == pygame.K_e:
+                    newName += "E"
+                if event.key == pygame.K_f:
+                    newName += "F"
+                if event.key == pygame.K_g:
+                    newName += "G"
+                if event.key == pygame.K_h:
+                    newName += "H"
+                if event.key == pygame.K_i:
+                    newName += "I"
+                if event.key == pygame.K_j:
+                    newName += "J"
+                if event.key == pygame.K_k:
+                    newName += "K"
+                if event.key == pygame.K_l:
+                    newName += "L"
+                if event.key == pygame.K_m:
+                    newName += "M"
+                if event.key == pygame.K_n:
+                    newName += "N"
+                if event.key == pygame.K_o:
+                    newName += "O"
+                if event.key == pygame.K_p:
+                    newName += "P"
+                if event.key == pygame.K_q:
+                    newName += "Q"
+                if event.key == pygame.K_r:
+                    newName += "R"
+                if event.key == pygame.K_s:
+                    newName += "S"
+                if event.key == pygame.K_t:
+                    newName += "T"
+                if event.key == pygame.K_u:
+                    newName += "U"
+                if event.key == pygame.K_v:
+                    newName += "V"
+                if event.key == pygame.K_w:
+                    newName += "W"
+                if event.key == pygame.K_x:
+                    newName += "X"
+                if event.key == pygame.K_y:
+                    newName += "Y"
+                if event.key == pygame.K_z:
+                    newName += "Z"
+                if event.key == pygame.K_BACKSPACE:
+                    newName = newName[0:-1]
+                    screen.fill((0,0,0))
+                    textScreenObj = fontObjSmall.render('Enter Your Initials', True, (255, 255, 255) )
+                    screen.blit(textScreenObj,(225,30))#Prints out Score in white 8-bit letters
+                
+                if event.key == pygame.K_RETURN:
+                    run = False
+                
+                textscreenObj = fontObjSmallest.render(newName, True, (255, 255, 255) )
+                screen.blit(textscreenObj, (300,300))
+                pygame.display.update()
+                
+                
+            pygame.display.update()
+            
+    
 def mainMenu(screen): 
     main(screen) #Passes from the window that was created and passed to main menu
     
+    """
+    Need this or the kernel will die when the window closes, or game over. 
+    Really whenever we exit the game loop. But ITS IMPORTANT SO REMEMBER KEEP THIS AS LAST LINE AFTER THE GAME LOOP
+    Put it here in the end so I didn't have to keep moving it when adding new functions and screens'
+    """
+    pygame.display.quit()  
 
 mainMenu(screen)  # Runs to start the game

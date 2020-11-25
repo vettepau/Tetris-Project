@@ -24,6 +24,9 @@ right arrow or d key moves piece right
 up arrow or w key rotates piece
 holding down the down arrow or s key will cause the piece to fall twice as fast
 Press Space to store a piece once per turn.
+Press p to toggle pause.
+
+When inputing New Highscore Name, DO NOT USE CONSOLE, just type it normally, backspace works, enter to submit.
 """
 
 """
@@ -204,6 +207,7 @@ def main(screen):
     lockedPositions = {} #Initialize Locked Postitions as a blank dictionary
     grid = createGrid(lockedPositions) #Passes the dictionary into our method 
     
+    
     isStored = False
     storedThisTurn = False
     storedPiece = 0
@@ -254,7 +258,12 @@ def main(screen):
                         
                 if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     fastFall = 7 #The higher this number the faster the fall
-                    
+                
+                if event.key == pygame.K_p:
+                    pause(screen)
+              
+                       
+                
                 if event.key == pygame.K_SPACE:
                     if not isStored:
                         storedPiece = currentPiece
@@ -338,7 +347,7 @@ def main(screen):
             
             newHigh.write(newName+"\n")
             newHigh.write(str(score)+"\n")
-            
+                
             newHigh.write(player2Name+"\n")
             newHigh.write(player2Score+"\n")
             
@@ -691,6 +700,22 @@ def newHighScore(screen):
                 
             pygame.display.update()
             
+def pause(screen):
+    """
+    Pauses the game, displays the pause message, unpauses when p is pressed again.
+
+    """
+    pause = True
+    while pause:
+        textScreenObj = fontObjSmall.render('Paused', True, (255, 255, 255) )
+        screen.blit(textScreenObj,(350,300))
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    pause = False
+        pygame.display.update()
+
+
     
 def mainMenu(screen): 
     main(screen) #Passes from the window that was created and passed to main menu

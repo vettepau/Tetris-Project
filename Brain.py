@@ -27,10 +27,10 @@ class Event():
 
 
 counter = 0
-def run(grid):
+def run(grid, x, y, shape):
     global counter
     counter += 1
-    if counter < 3:
+    if counter < 5:
         return []
     counter = 0
     print(grid)

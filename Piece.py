@@ -14,6 +14,13 @@ The game will consist of 6 different classes:
 Using Tetris-Architecture.html for guidance and resources 
 '''
 
+'''
+I originally created this class because I thought we would have to do the rotation in here however Seth figured out that
+pygame can rotate the peices on its own so no need for this class. ~ Paul
+
+'''
+
+
 import random
 
 class Piece:

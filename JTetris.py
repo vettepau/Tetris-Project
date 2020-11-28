@@ -41,6 +41,7 @@ import pygame
 import random
 import turtle as t
 from turtle import bgcolor
+import Brain 
 
 #Intialize
 pygame.init()
@@ -262,8 +263,12 @@ def main(screen):
                 currentPiece.y += -1 #move it back up to valid, gonna just go ahead and slide that bad boy back up there
                 changePiece = True #I knew this would come in handy, *pats self on back*
                 storedThisTurn = False
+        '''
+        Seth's original line was 'for event in pygame.event.get()'
         
-        for event in pygame.event.get(): #Pygame makes this so so sweet
+        I call the brain then add its input in order to make the next move
+        '''
+        for event in list(pygame.event.get()) + Brain.run(grid): #Adds the suggested input from the brain
             if event.type == pygame.QUIT:
                 run = False #this breaks out of the while Loop
                 

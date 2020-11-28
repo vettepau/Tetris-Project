@@ -13,3 +13,26 @@ The game will consist of 6 different classes:
 
 Using Tetris-Architecture.html for guidance and resources 
 '''
+
+import pygame
+
+
+class Event():
+    type = None
+    key = None
+
+    def __init__(self, type, key):
+        self.type = type
+        self.key = key
+
+
+counter = 0
+def run(grid):
+    global counter
+    counter += 1
+    if counter < 3:
+        return []
+    counter = 0
+    print(grid)
+    e = Event(pygame.KEYDOWN, pygame.K_UP)
+    return [e]

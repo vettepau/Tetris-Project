@@ -208,6 +208,9 @@ def getColumnHeight(grid, column):
     return h
 
 def Heights(grid):
+    '''
+    returns the max height of the board and the avg height of the board
+    '''
     maxx = 0
     total = 0
     for i in range(10):
@@ -218,23 +221,34 @@ def Heights(grid):
     return maxx, total/10
 
 def clear(grid, maxx):
+    '''
+    returns number of lines cleared
+    '''
     for i in range(maxx):
         for j in range(10):
             x = 0
 
 def rate(grid):
+    '''
+    rates the position based of criteria and returns a score
+    '''
     maxx, avg = Heights(grid)
+    clear = (grid, maxx)
     hole = 0
     for i in range(10):
         h = getColumnHeight(grid,i) - 2 #where the first hole could be
         for j in range(h+1):
             if grid[j][i] == 0:
                 hole += 1
-    score = 8*maxx + 40*avg + 1.25*hole 
+    score = 8*maxx + 40*avg + 1.25*hole - 10*clear #random values that will be perfected later with machine learning
     return score
     
                 
-def best_position(piece,grid, x, y):
+def best_position(piece,grid):
+    '''
+    tests of the positions that are valid and decides which one is the best.
+    returns the x and y values of the best position
+    '''
     pos = validPositions(piece, grid)
     for i in range(len(pos)):
         grid = grid
@@ -242,6 +256,10 @@ def best_position(piece,grid, x, y):
     return 0
                 
 def best_rotation(grid, piece):
+    '''
+    tests the best positions from each rotation and decides which rotation is the best.
+    returns the rotation and x position
+    '''
     rotation = 0
     
     return 0
@@ -257,21 +275,17 @@ def run(grid, x, y, shape):
     if counter < 3: #slow the brain down
         return []
     counter = 0
-    global rotation
     
     grid = sort(grid)
-    
-    '''
-    position = best_position(grid,x,y)
+    r, position = best_position(Piece,grid,x,y)
 
-    #if bestRotation(grid) != rotation:
-    #    e = Event(pygame.KEYDOWN, pygame.K_UP)
-    if position < x:
+    if r != rotation:
+        e = Event(pygame.KEYDOWN, pygame.K_UP)
+    elif position < x:
         e = Event(pygame.KEYDOWN, pygame.K_RIGHT)
     elif position > x:
         e = Event(pygame.KEYDOWN, pygame.K_LEFT)
     else:
         e = Event(pygame.KEYDOWN, pygame.K_DOWN)
-        '''
-    e = Event(pygame.KEYDOWN, pygame.K_DOWN)
+        
     return [e]

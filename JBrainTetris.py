@@ -189,7 +189,7 @@ class Piece(object):
         self.shape = shape
         self.color = colors[shapes.index(shape)] # Returns the color of the shape being passed
         self.rotation = 0 #Defaulted to 0, will incremint when up arrow is pressed, number will refrence which list to display.
-
+        
     
 
 def main(screen):
@@ -248,7 +248,8 @@ def main(screen):
         
         I call the brain then add its input in order to make the next move
         '''
-        for event in list(pygame.event.get()) + Brain.run(grid, currentPiece.x, currentPiece.y, getShape()): #Adds the suggested input from the brain
+        
+        for event in list(pygame.event.get()) + Brain.run(grid, currentPiece.x, currentPiece.y, currentPiece.shape): #Adds the suggested input from the brain
             if event.type == pygame.QUIT:
                 run = False #this breaks out of the while Loop
                 

@@ -1,6 +1,6 @@
 '''
 I originally created this class because I thought we would have to do the rotation in here however we figured out that
-pygame can rotate the peices on its own so there is no need for this class. ~ Paul
+Jtetris can rotate the peices on its own so there is no need for this class. ~ Paul
 
 '''
 

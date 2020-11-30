@@ -1,22 +1,13 @@
 '''
-Tetris Project 
-Creators:
-    Paul Vetter, Seth Webb, Anna Woodruff, & Sarah Rosinbaum
-Engr 102 final project
+JBrainTetris - Similar to JTetris except that it uses a brain to play the game w/ out a human player
 
-The game will consist of 6 different classes:
-    Piece - a single tetris peice 
-    JTetris - present the GUI for tetris in a window and do animation
-    Brain - simple heuristic logic that knows how to play the tetris
-    JBrainTetris - a subclass of JTetris that uses a brain to play the game w/ out a human player
-    BrainTester - Possibly include this class to test our brain and implement machine learning
 
-Using Tetris-Architecture.html for guidance and resources 
+This is the exact same as JTetris except it calls the brain for a recommended piece movement
+
+For explaination of main functions look at JTetris docStrings
+I have also included an explanation of the differing functions below ~ Paul
 '''
 
-"""
-This is the exact same as JTetris except it is run by the brain
-"""
 import pygame
 import random
 import turtle as t
@@ -37,7 +28,6 @@ playHeight = 600  # meaning 600 // 20 = 20 height per blo ck
 blockSize = 30
 topLeftOfPlayX = (windowWidth - playWidth) // 2
 isPieceStored = False
-
 
 
 
@@ -70,10 +60,7 @@ high.close()
 pygame.mixer.music.load("Chip Tone Aggie War Hymn.mp3")
 pygame.mixer.music.set_volume(0.1)
 
-"""
-Lists currently empty unitl Paul creates the shape grids, need to make sure the order is correct, and that we match the 
-order of the shapes with the order of the colors. This will be passed into the piece class, also need his variable names.
-"""
+
 S = [['00000',
       '00000',
       '00110',
@@ -244,9 +231,13 @@ def main(screen):
                 changePiece = True #I knew this would come in handy, *pats self on back*
                 storedThisTurn = False
         '''
+        This is where JTetris and JBrainTetris differ
+        instead of just asking for keyboard input JBrainTetris asks for input from the brain
+        
         Seth's original line was 'for event in pygame.event.get()'
         
-        I call the brain then add its input in order to make the next move
+        Inaddition to keyboard input it sends the brain the nessescary parameters being the current board, 
+        x and y position of the piece in motion and its shape which the brain uses to calc the next move and returns it
         '''
         
         for event in list(pygame.event.get()) + Brain.run(grid, currentPiece.x, currentPiece.y, currentPiece.shape): #Adds the suggested input from the brain
@@ -415,11 +406,6 @@ def getShape():
     global shapes, colors
 
     return Piece(5, 0, random.choice(shapes))
-    """
-    Passes an object into the piece class and return the corrisponding set of values.
-    Object values passed are x, y, shape
-    is 5 and 0 because we are refferencing squares on the board not pixels
-    """
 
 
 def convertShape(shape):
@@ -441,12 +427,8 @@ def valid(shape, grid):
     #The ifgrid[i][j] == black checks if empty space, we only want to add empty spaces to our valid list, for obvious reasons.
     acceptedPositions = [[(j, i) for j in range(10) if grid[i][j] == (0,0,0) ] for i in range(20)] #A tuple of all accepted positions allowed in the grid. Did it this way was tired of nested for loops, sue me. 
     acceptedPositions = [j for sub in acceptedPositions for j in sub] #Had to look up how to do this, turns matrix into a list, 2D to 1D Emailed Ritchey to ask about will see when she responds
-    """
-    [[1,2] , [3,4]]
-    becomes 
-    [1,2,3,4]
-    for refrence of before and after structure.
-    """ 
+    
+    
     converted = convertShape(shape) #Makes the info Usable
     
     for position in converted:
@@ -481,17 +463,8 @@ def clearRows(grid, lockedPositions ):
                     continue #Im pretty sure we needed a try as part of our grade, this was the best spot I could think of
             
             
-    
-    """
-    To Paul,
-    If you dont understand how python handles Global variable refrence and how we keep the function from 
-    creating its own local variable, these two links might help give insight. - Seth
-    https://www.python-course.eu/python3_global_vs_local_variables.php
-    https://stackoverflow.com/questions/10506973/can-not-increment-global-variable-from-function-in-python
-    """
     global score#DO NOT REMOVE, This is needed or else it keeps trying to create a local variable score and the whole things crashes when you clear a line
      
-    
     
     if count > 0: #Meaning we cleared at least one line
     #Score increase from clearing lines
@@ -505,18 +478,6 @@ def clearRows(grid, lockedPositions ):
             score += 600
     
         
-    
-        """"
-        This next line basically sorts elements of the list be their Y values, it's a bit trippy and weird to explain but it works like this
-        unsorted (1,2) , (5,3) (9,1)
-        sorted (9,1) , (1,2) , (5,3)
-        
-       
-        I didn't Use i and j because it needs to be key for that lamda sort. Hopefully it is easier to follow than write.
-        For information on the sorts check these two websites, they had useful info, especially the first one.
-        https://docs.python.org/3/howto/sorting.html
-        https://stackoverflow.com/questions/3766633/how-to-sort-with-lambda-in-python
-        """
         for key in sorted(list(lockedPositions), key = lambda x: x[1])[::-1]: #Definitely had to look this up, converted it to work with our variables and matrix based data, that lambda stuff is funky. Probably best to not touch, convert things to work with this not vise verse
             x,y = key #Because key is a touple because of our 2D Matrix
             if y < remember:
@@ -1530,7 +1491,16 @@ def MenuDisplay():
   
   t.bye()
   
-def scoreReturn(): #for the machine learning portion of the brain, to be called outside of the module
+def scoreReturn(): 
+    '''
+    Additional method to get the score so that I can see how the brain performed
+
+    Returns
+    -------
+    score : int
+        number of points from clearing lines
+
+    '''
     global score
     return score
   
@@ -1547,11 +1517,6 @@ def mainMenu():
     
     main(screen)#Passes from the window that was created and passed to main menu
     
-    """
-    Need this or the kernel will die when the window closes, or game over. 
-    Really whenever we exit the game loop. But ITS IMPORTANT SO REMEMBER KEEP THIS AS LAST LINE AFTER THE GAME LOOP
-    Put it here in the end so I didn't have to keep moving it when adding new functions and screens'
-    """
     pygame.display.quit()  
 
 mainMenu()  # Runs to start the game

@@ -19,10 +19,10 @@ Using Tetris-Architecture.html for guidance and resources
 # -*- coding: utf-8 -*-
 """
 Instructions
-left arrow or a key moves piece left
-right arrow or d key moves piece right
-up arrow or w key rotates piece
-holding down the down arrow or s key will cause the piece to fall twice as fast
+left arrow or "a" key moves piece left
+right arrow or "d" key moves piece right
+up arrow or "w" key rotates piece
+holding down the down arrow or "s" key will cause the piece to fall twice as fast
 Press Space to store a piece once per turn.
 Press p to toggle pause.
 
@@ -41,7 +41,6 @@ import pygame
 import random
 import turtle as t
 from turtle import bgcolor
-import Brain 
 
 #Intialize
 pygame.init()
@@ -54,7 +53,7 @@ windowWidth = 800
 windowHeight = 600
 playWidth = 300  # meaning 300 // 10 = 30 width per block
 playHeight = 600  # meaning 600 // 20 = 20 height per blo ck
-blockSize = 30
+cellSize = 30
 topLeftOfPlayX = (windowWidth - playWidth) // 2
 isPieceStored = False
 
@@ -201,6 +200,11 @@ colors = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0),
 
 
 class Piece(object):
+    """
+    Takes in a spawn position, x and y, and takes in what shape the piece will be.
+    Used to create elements of pieces to be used by other of functions. Refrenced mainly by position, and color.
+    Shape used when displaying next and stored pieces.
+    """
    # x = 20
     #y = 10
     def __init__(self, x, y, shape): #self is like this from java, funny enough turns out you can do other words not self, but to keep it easy for Dr. Ritchey to Grade I say we keep it as self.
@@ -213,6 +217,30 @@ class Piece(object):
     
 
 def main(screen):
+    """
+    Takes in a window, named screen.
+    Initializes a blank dictionary locked positions and then creates a grid based off of the dictionary,
+    storing it in the varibale grid.
+    initializes variables to fit the start conditions of the game.
+    
+    The game loop is initiated.
+    The music manager is the first thing evaluated in the game loop.
+    Next, the falling of the pieces is managed by set fall times and the clock rawtime,
+    whenever the current clock time is greater than the set fall check time, the piece is moved down one posistion.
+    We also recreate the grid variable based on the dictionary of locked positions.
+    
+    If the user exits out of the window it will exit out of the gameloop.
+    
+    We have specialized inputs to the state of the piece based on keyboard inputs given.
+    
+    we have the calls for next piece and stored piece when applicable.
+    
+    We then call the rendering near the bottem to ensure it displays the most current information.
+    
+    At the end of the game loop we check to see if the player has lost based on if there are pieces above the allowed play area.
+    
+    After the game loop we check to see if we need to update the score.
+    """
     lockedPositions = {} #Initialize Locked Postitions as a blank dictionary
     grid = createGrid(lockedPositions) #Passes the dictionary into our method 
     
@@ -232,7 +260,7 @@ def main(screen):
     nextPiece = getShape() #A benifit of this I just noticed is we only have to keep track of two sets of self. keeps memory relatively free. Only two objectives of the shape Class. 
     fastFall = 1
     
-    musicCount = 0
+    musicCount = 1
     
     #THE GAME LOOP, AS FROM THE ORIGINAL BUILD, BEFORE EVERYTHING WENT BAD
     while run:
@@ -242,7 +270,7 @@ def main(screen):
         
         #This is a little easteregg left in be the development team, whats a game without eggs :)
         if not pygame.mixer.music.get_busy():
-            if musicCount % 5 == 0:
+            if musicCount % 3 == 0:
                 pygame.mixer.music.load("Video Game medley.mp3")
                 pygame.mixer.music.set_volume(0.4)
             else: 
@@ -264,7 +292,7 @@ def main(screen):
                 changePiece = True #I knew this would come in handy, *pats self on back*
                 storedThisTurn = False
         
-        for event in pygame.event.get():
+        for event in pygame.event.get(): #Pygame makes this so so sweet
             if event.type == pygame.QUIT:
                 run = False #this breaks out of the while Loop
                 
@@ -414,6 +442,11 @@ def main(screen):
     #End of Main Functon.
 
 def createGrid(lockedPositions = {}):
+    """
+    Creates a 2d matrix of values 0,0,0. Representing the color black.
+    Then it checks for every possible position stored in the dictionary locked positions and return a color value if there exists
+    a key corisponding to that position, updating and returning a grid, 2d matrix, filled with the color values needed.
+    """
     grid = [[(0,0,0,) for x in range(10)] for y in range(20)] #Draws a 20 X 10 Black-(0,0,0) Grid
     
     #Checks the grid for already played pieces
@@ -427,17 +460,26 @@ def createGrid(lockedPositions = {}):
 
 
 def getShape():
-    global shapes, colors
-
-    return Piece(5, 0, random.choice(shapes))
     """
     Passes an object into the piece class and return the corrisponding set of values.
     Object values passed are x, y, shape
     is 5 and 0 because we are refferencing squares on the board not pixels
+    The shape that is passed is chosen via random.choice form the list of shapes.
     """
+    global shapes, colors
+
+    return Piece(5, 0, random.choice(shapes))
+  
 
 
 def convertShape(shape):
+    """
+    Takes in a shape argument.
+    creates an empty list called positions that will be added to during the conversion.
+    The roation is a cycle of the different sets of values possible for the shapes, since it loops a modulus is used.
+    posistions is appeneded based on whether or not the value of the set of shapes is a 0 or a 1,
+    1's get apended.
+    """
     positions = [] #new empty list
     form = shape.shape[shape.rotation % len(shape.shape)] #Modulus allows us to cycle through rotations :) hope that helps you in your design, Pual
     
@@ -453,6 +495,14 @@ def convertShape(shape):
     return positions
 
 def valid(shape, grid):
+    """
+    Passes in the shape of the current piece and the 2d list of color values grid.
+    makes a list of accepted positions based on whether or not that postion in grid is black or not, black is accepted.
+    Then gets a converted form of the shape by passing shape into convert shape.
+    If the any of the positions of the piece is in a position not shared by accepted positions list, it will return False
+    Otherwise, if all positions are shared by acceptedPositions it will return true.
+
+    """
     #The ifgrid[i][j] == black checks if empty space, we only want to add empty spaces to our valid list, for obvious reasons.
     acceptedPositions = [[(j, i) for j in range(10) if grid[i][j] == (0,0,0) ] for i in range(20)] #A tuple of all accepted positions allowed in the grid. Did it this way was tired of nested for loops, sue me. 
     acceptedPositions = [j for sub in acceptedPositions for j in sub] #Had to look up how to do this, turns matrix into a list, 2D to 1D Emailed Ritchey to ask about will see when she responds
@@ -471,6 +521,11 @@ def valid(shape, grid):
     return True #Because that means all must be true, all passed.
 
 def checkLost(positions):
+    """
+    Is given the dictionary locked positions as positions.
+    Checks to see if any of the key positions y values exists outside the play area, if so returns True and makes main exit 
+    the game loop, otherwise; if none postions are outside the play are it returns False and the game loop continues.
+    """
     for position in positions: #Note Singular versus Plural, this is important !!!!!!!
         x, y = position
         if y < 1: #Checks to see if above screen
@@ -481,6 +536,14 @@ def checkLost(positions):
 
 
 def clearRows(grid, lockedPositions ):
+    """
+    Is given both the 2d list grid and the dictionary lockedPositions.
+   Checks to see if a row(s) contain no black spaces, and makes count equal to the number of rows not containing a black space.
+   I also stores the value of that row as remember.
+   Next we clear the row set as remember. 
+   Now based on the count of rows cleared we incriment the scroe and downshift the dictionary of locked positions so we dont
+   have floating incomplete row. 
+    """
     #ALot harder than I though because of gravity, but I think I found a useful method, need to Test with Puals Shapes.
     
     count = 0
@@ -544,17 +607,29 @@ def clearRows(grid, lockedPositions ):
         return score
 
 def drawGrid(screen, grid):
+    """
+    Draws grid lines to split up the cells of play arean making it easier to line up pieces.
+    """
     
     #Draws A Grid Of Lines
     for i in range(20):
-        pygame.draw.line(screen, (255, 255, 255), (topLeftOfPlayX, i * blockSize), (topLeftOfPlayX + playWidth, i * blockSize)) #Horizontal Line
+        pygame.draw.line(screen, (255, 255, 255), (topLeftOfPlayX, i * cellSize), (topLeftOfPlayX + playWidth, i * cellSize)) #Horizontal Line
         for j in range(10):
-             pygame.draw.line(screen, (255, 255, 255), (topLeftOfPlayX + j * blockSize, 0), (topLeftOfPlayX + j * blockSize, playHeight)) #vert lines
+             pygame.draw.line(screen, (255, 255, 255), (topLeftOfPlayX + j * cellSize, 0), (topLeftOfPlayX + j * cellSize, playHeight)) #vert lines
             
    
 
 
 def drawNextShape(shape, screen):
+    """
+    Takes in a shape and the window.
+    Renders the word next.
+    Then renders the piece corrisponding to the shape value passed, which should be the same is the shape value stored
+    as next in the game loop, making the graphic and the gameplay corrispond.
+    It draws the piece be seeing the shape and going through a 2d list evaluation of where it is defined, similar to convert shape.
+    0 means not exist, 1 means exist. Like a boolean.
+
+    """
     textscreenObj = fontObj.render('Next', True, (255, 255, 255))#Next Shape wouldn't fit, changed to Next
    
     
@@ -570,9 +645,15 @@ def drawNextShape(shape, screen):
         for j, column in enumerate(row):
             if column == "1":
                 #Rather than add postion, which we care not for, we will draw it, simmilar to the line in the drawWindow method below. wave at it, its a friend.
-                pygame.draw.rect(screen, shape.color, (nextPieceX + j * blockSize, nextPieceY + i*blockSize + 45, blockSize, blockSize), 0) 
+                pygame.draw.rect(screen, shape.color, (nextPieceX + j * cellSize, nextPieceY + i*cellSize + 45, cellSize, cellSize), 0) 
     
 def drawStoredShape(screen, shape, check):
+    """
+    Takes in the weindow, the shape of the stroed piece, and a boolean check which tells if a piece is stored.
+    Draws the word stroed,
+    It evaluates check, if true meaning there is a piece it will the render the piece based on the shape value given.
+    For rendering details, see function drawNextShape.
+    """
     textscreenObj = fontObj.render('Stored', True, (255, 255, 255))
    
     
@@ -590,15 +671,21 @@ def drawStoredShape(screen, shape, check):
             for j, column in enumerate(row):
                 if column == "1":
                     #Rather than add postion, which we care not for, we will draw it, simmilar to the line in the drawWindow method below. wave at it, its a friend.
-                    pygame.draw.rect(screen, shape.color, (storedPieceX + j * blockSize, storedPieceY + i*blockSize + 45, blockSize, blockSize), 0)
+                    pygame.draw.rect(screen, shape.color, (storedPieceX + j * cellSize, storedPieceY + i*cellSize + 45, cellSize, cellSize), 0)
 
 def drawWindow(screen, grid):
+    """
+    Takes in a window, screen. Takes in a 2d list, grid.
+    makes the window a solid maroon to be used as a background.
+    cellSize is presdetirmed and is used to make more than one pixel be drawn.
+    It then calls the funciton drawGrid, passing in the Screen and grid.
+    """
     screen.fill((67,0,48)) #Draws the maroon background.
      
     for i in range(20):
         for j in range(10):
             #Draws onto screen the color of grid[i][j], at the correct position, height and width of the draw, and the 0 at the end to make sure it filles the draw, without it it only draws borders
-            pygame.draw.rect(screen, grid[i][j], (topLeftOfPlayX + j * blockSize, i * blockSize, blockSize, blockSize), 0) 
+            pygame.draw.rect(screen, grid[i][j], (topLeftOfPlayX + j * cellSize, i * cellSize, cellSize, cellSize), 0) 
             
             
     
@@ -608,6 +695,14 @@ def drawWindow(screen, grid):
     
 
 def drawScore(screen):
+     """
+     Evaluates the number of digits in the global variable score and then
+     renders it in a location based on its length, the longer the score the more leftward it is rendered.
+     y value is unnaffected.
+
+   
+
+     """
      textscreenObj = fontObj.render('Score', True, (255, 255, 255) )
      screen.blit(textscreenObj,( 40,330))#Prints out Score in white 8-bit letters
      
@@ -621,6 +716,9 @@ def drawScore(screen):
      screen.blit(textscreenObj,( 100 - digits * 12.5 ,380))
 
 def drawHighScore(screen):
+     """
+     Takes in the previously defined player names and scores and renders them accordingly in the top left corner of the screen.
+     """
      textscreenObj = fontObjSmall.render('Leaderboard', True, (255, 255, 255) )
      screen.blit(textscreenObj,(15,30))#Prints out Score in white 8-bit letters
      
@@ -647,6 +745,11 @@ def drawHighScore(screen):
      screen.blit(textscreenObj,(95,140))
 
 def newHighScore(screen):
+    """
+    Draws a black screen and looks for keyboard inputs, based on inputs it concatinates to a string and then 
+    renders the string into the middle of the screen. 
+    The string of the name is made global so it can be refrenced in the Main function when creating the new txt file.
+    """
     global newName
     run = True
     screen.fill((0,0,0))
@@ -731,7 +834,8 @@ def newHighScore(screen):
 def pause(screen):
     """
     Pauses the game, displays the pause message, unpauses when p is pressed again.
-
+    Also pauses the music when pressed, resumes the music if the funciton is about to go back.
+    Has a boolean return incase the user closes the window while paused, will stop music and exit game loop if returned false.
     """
     
     pygame.mixer.music.pause()
@@ -755,6 +859,13 @@ def pause(screen):
     return True
     
 def MenuDisplay():
+  """
+    A simple collection of turtle graphic instructions that draws out 
+    welecome to aggieland tetris.
+    Starts by initializing speed and color and mode.
+    Next is all the movement instructions.
+
+  """
   #Welcome to Aggieland Tetris
   #Welcome to
   #Setting place
@@ -1547,6 +1658,15 @@ def MenuDisplay():
   
   
 def mainMenu():
+    """
+    Starts the music
+    Calls the function MenuDisplay
+    Creates a window named screen of dimensions windowWidth and windowHeight, global variables,
+    and assigns different attributes to the window such as caption and icon.
+    Passes the window into the main function.
+    Closes the window, we do it here because this function is the bookend of the whole program so it ensures that happens 
+    everytime and that it happens last.
+    """
     pygame.mixer.music.play()
     MenuDisplay()
     

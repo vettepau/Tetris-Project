@@ -1530,6 +1530,10 @@ def MenuDisplay():
   
   t.bye()
   
+def scoreReturn():
+    global score
+    return score
+  
   
 def mainMenu():
     pygame.mixer.music.play()

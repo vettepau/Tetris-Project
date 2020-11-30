@@ -1530,7 +1530,7 @@ def MenuDisplay():
   
   t.bye()
   
-def scoreReturn():
+def scoreReturn(): #for the machine learning portion of the brain, to be called outside of the module
     global score
     return score
   

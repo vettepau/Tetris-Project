@@ -1,22 +1,15 @@
 '''
 Tetris Project 
 Creators:
-    Paul Vetter, Seth Webb, Anna Woodruff, & Sarah Rosinbaum
+    Paul Vetter, Seth Webb, Sarah Rosinbaum, & Anna Woodruff
 Engr 102 final project
-The game will consist of 6 different classes:
-    Piece - a single tetris peice 
-    JTetris - present the GUI for tetris in a window and do animation
+The game will consist of 4 different files:
+    JTetris - presents tetris in a window and runs game and animation
     Brain - simple heuristic logic that knows how to play the tetris
-    JBrainTetris - a subclass of JTetris that uses a brain to play the game w/ out a human player
-    BrainTester - Possibly include this class to test our brain and implement machine learning
-Using Tetris-Architecture.html for guidance and resources 
+    JBrainTetris - Similar to JTetris except that it uses a brain to play the game w/ out a human player
+    BrainTester - Possibly include this file to test our brain and implement machine learning 
 '''
 
-# -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
 """
 Instructions
 left arrow or "a" key moves piece left
@@ -32,11 +25,6 @@ DO NOT put in names longer than four characters!
 PLay Long Enough and discover the hidden musical easteregg!
 """
 
-"""
-Things still left to do:
-Add a Menu Before the Game Starts
-Add an AI to play and get better at the game.
-"""
 import pygame
 import random
 import turtle as t
@@ -56,8 +44,6 @@ playHeight = 600  # meaning 600 // 20 = 20 height per blo ck
 cellSize = 30
 topLeftOfPlayX = (windowWidth - playWidth) // 2
 isPieceStored = False
-
-
 
 
 

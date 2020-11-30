@@ -1,16 +1,28 @@
 '''
 Tetris Project 
 Creators:
-    Paul Vetter, Seth Webb, Sarah Rosinbaum, & Anna Woodruff
+    Paul Vetter, Seth Webb, Anna Woodruff, & Sarah Rosinbaum
 Engr 102 final project
+<<<<<<< HEAD
 The game will consist of 4 different files:
     JTetris - presents tetris in a window and runs game and animation
         - Piece class within
+=======
+The game will consist of 6 different classes:
+    Piece - a single tetris peice 
+    JTetris - present the GUI for tetris in a window and do animation
+>>>>>>> 0df10d11267464c5454996fff847fcec2530e214
     Brain - simple heuristic logic that knows how to play the tetris
-    JBrainTetris - Similar to JTetris except that it uses a brain to play the game w/ out a human player
-    BrainTester - Possibly include this file to test our brain and implement machine learning 
+    JBrainTetris - a subclass of JTetris that uses a brain to play the game w/ out a human player
+    BrainTester - Possibly include this class to test our brain and implement machine learning
+Using Tetris-Architecture.html for guidance and resources 
 '''
 
+# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 Instructions
 left arrow or "a" key moves piece left
@@ -26,6 +38,11 @@ DO NOT put in names longer than four characters!
 PLay Long Enough and discover the hidden musical easteregg!
 """
 
+"""
+Things still left to do:
+Add a Menu Before the Game Starts
+Add an AI to play and get better at the game.
+"""
 import pygame
 import random
 import turtle as t
@@ -45,6 +62,8 @@ playHeight = 600  # meaning 600 // 20 = 20 height per blo ck
 cellSize = 30
 topLeftOfPlayX = (windowWidth - playWidth) // 2
 isPieceStored = False
+
+
 
 
 
@@ -79,111 +98,112 @@ pygame.mixer.music.set_volume(0.1)
 """
 Lists currently empty unitl Paul creates the shape grids, need to make sure the order is correct, and that we match the 
 order of the shapes with the order of the colors. This will be passed into the piece class, also need his variable names.
+Shape grids now created in a new fromat to be better used, don't worry about it anymore.
 """
-S = [['00000',
-      '00000',
-      '00110',
-      '01100',
-      '00000'],
-     ['00000',
-      '00100',
-      '00110',
-      '00010',
-      '00000']]
+smashBoy = [['00000',
+             '00000',
+             '01100',
+             '01100',
+             '00000']]
 
-Z = [['00000',
-      '00000',
-      '01100',
-      '00110',
-      '00000'],
-     ['00000',
-      '00100',
-      '01100',
-      '01000',
-      '00000']]
+rhodeIslandZ = [['00000',
+                 '00000',
+                 '00110',
+                 '01100',
+                 '00000'],
+                ['00000',
+                 '00100',
+                 '00110',
+                 '00010',
+                 '00000']]
 
-I = [['00100',
-      '00100',
-      '00100',
-      '00100',
-      '00000'],
-     ['00000',
-      '11110',
-      '00000',
-      '00000',
-      '00000']]
+clevelandZ = [['00000',
+               '00000',
+               '01100',
+               '00110',
+               '00000'],
+              ['00000',
+               '00100',
+               '01100',
+               '01000',
+               '00000']]
 
-O = [['00000',
-      '00000',
-      '01100',
-      '01100',
-      '00000']]
+hero = [['00100',
+         '00100',
+         '00100',
+         '00100',
+         '00000'],
+        ['00000',
+         '11110',
+         '00000',
+         '00000',
+         '00000']]
 
-J = [['00000',
-      '01000',
-      '01110',
-      '00000',
-      '00000'],
-     ['00000',
-      '00110',
-      '00100',
-      '00100',
-      '00000'],
-     ['00000',
-      '00000',
-      '01110',
-      '00010',
-      '00000'],
-     ['00000',
-      '00100',
-      '00100',
-      '01100',
-      '00000']]
+blueRicky = [['00000',
+              '01000',
+              '01110',
+              '00000',
+              '00000'],
+             ['00000',
+              '00110',
+              '00100',
+              '00100',
+              '00000'],
+             ['00000',
+              '00000',
+              '01110',
+              '00010',
+              '00000'],
+             ['00000',
+              '00100',
+              '00100',
+              '01100',
+              '00000']]
 
-L = [['00000',
-      '00010',
-      '01110',
-      '00000',
-      '00000'],
-     ['00000',
-      '00100',
-      '00100',
-      '00110',
-      '00000'],
-     ['00000',
-      '00000',
-      '01110',
-      '01000',
-      '00000'],
-     ['00000',
-      '01100',
-      '00100',
-      '00100',
-      '00000']]
+orangeRicky = [['00000',
+                '00010',
+                '01110',
+                '00000',
+                '00000'],
+               ['00000',
+                '00100',
+                '00100',
+                '00110',
+                '00000'],
+               ['00000',
+                '00000',
+                '01110',
+                '01000',
+                '00000'],
+               ['00000',
+                '01100',
+                '00100',
+                '00100',
+                '00000']]
 
-T = [['00000',
-      '00100',
-      '01110',
-      '00000',
-      '00000'],
-     ['00000',
-      '00100',
-      '00110',
-      '00100',
-      '00000'],
-     ['00000',
-      '00000',
-      '01110',
-      '00100',
-      '00000'],
-     ['00000',
-      '00100',
-      '01100',
-      '00100',
-      '00000']]
+teeWee = [['00000',
+           '00100',
+           '01110',
+           '00000',
+           '00000'],
+          ['00000',
+           '00100',
+           '00110',
+           '00100',
+           '00000'],
+          ['00000',
+           '00000',
+           '01110',
+           '00100',
+           '00000'],
+          ['00000',
+           '00100',
+           '01100',
+           '00100',
+           '00000']]
 
-shapes = [S, Z, I, O, J, L, T]
-colors = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0), (0, 0, 255), (128, 0, 128)]
+shapes = [smashBoy, rhodeIslandZ, clevelandZ, hero, blueRicky, orangeRicky, teeWee]
+colors = [(255, 255, 0), (0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 165, 0), (0, 0, 255), (130, 0, 130)]
 
 
 class Piece(object):
@@ -459,7 +479,7 @@ def getShape():
   
 
 
-def convertShape(shape):
+def convertShape(currentShape):
     """
     Takes in a shape argument.
     creates an empty list called positions that will be added to during the conversion.
@@ -468,13 +488,13 @@ def convertShape(shape):
     1's get apended.
     """
     positions = [] #new empty list
-    form = shape.shape[shape.rotation % len(shape.shape)] #Modulus allows us to cycle through rotations :) hope that helps you in your design, Pual
+    form = currentShape.shape[currentShape.rotation % len(currentShape.shape)] #Modulus allows us to cycle through rotations :) hope that helps you in your design, Pual
     
     for i, line in enumerate(form): #had a lot of fun with this one. Sarcasm = True
         row = list(line)
         for j, column in enumerate(row):
             if column == '1':             # 1 being where block is, based on Pauls form. Note This *********IMPORTANT*********
-                positions.append((shape.x + j, shape.y + i))
+                positions.append((currentShape.x + j, currentShape.y + i))
                 
     for i, pos in enumerate(positions):
         positions[i] = (pos[0]-2 , pos[1] -4) #may or may not need offsets, will check when Paul passes his shapes
@@ -1671,5 +1691,5 @@ def mainMenu():
     Put it here in the end so I didn't have to keep moving it when adding new functions and screens'
     """
     pygame.display.quit()  
-
+ 
 mainMenu()  # Runs to start the game

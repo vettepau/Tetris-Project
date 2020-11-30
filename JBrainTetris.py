@@ -258,7 +258,7 @@ def main(screen):
                         currentPiece.x += -1 #Oppisite of the movement from key
                         
                 if event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                    fastFall = 10#7 #The higher this number the faster the fall
+                    fastFall = 7 #The higher this number the faster the fall
                 
                 if event.key == pygame.K_p:
                     run = pause(screen)

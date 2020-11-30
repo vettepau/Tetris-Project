@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
 """
-Created on Mon Nov 30 03:48:17 2020
+BrainTester - Possibly include this file to test our brain and implement machine learning
 
-@author: paulv
+I ran out of time however this would have been the class to run and test the brain while adjusting the variables seen in
+the rate function of the brain. Over time it would find the optimized values for the best score
 """
 
 import JBrainTetris

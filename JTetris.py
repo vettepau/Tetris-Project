@@ -1,28 +1,18 @@
 '''
 Tetris Project 
 Creators:
-    Paul Vetter, Seth Webb, Anna Woodruff, & Sarah Rosinbaum
+    Paul Vetter, Seth Webb, Sarah Rosinbaum, & Anna Woodruff
 Engr 102 final project
-<<<<<<< HEAD
+
 The game will consist of 4 different files:
     JTetris - presents tetris in a window and runs game and animation
         - Piece class within
-=======
-The game will consist of 6 different classes:
-    Piece - a single tetris peice 
     JTetris - present the GUI for tetris in a window and do animation
->>>>>>> 0df10d11267464c5454996fff847fcec2530e214
     Brain - simple heuristic logic that knows how to play the tetris
-    JBrainTetris - a subclass of JTetris that uses a brain to play the game w/ out a human player
-    BrainTester - Possibly include this class to test our brain and implement machine learning
-Using Tetris-Architecture.html for guidance and resources 
+    JBrainTetris - Similar to JTetris except that it uses a brain to play the game w/ out a human player
+    BrainTester - Possibly include this file to test our brain and implement machine learning
 '''
 
-# -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
 """
 Instructions
 left arrow or "a" key moves piece left

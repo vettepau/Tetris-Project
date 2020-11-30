@@ -259,16 +259,16 @@ def run(grid, x, y, shape):
     Basically my main function. Creates a piece and gathers input from the other methods.
     Then returns the suggested movement based on the desired x pos and rotation
     '''
-    p = Piece(x, y, shape) #create same piece from JTetris
     global counter
     counter += 1
-    if counter < 70: #slow the brain down, w/out slowing it down the window was crashing 
+    if counter < 50: #slow the brain down, w/out slowing it down the window was crashing 
         #in the end because this does hinder the brains ability
         #if I was to improve the brain later on I would find some ways to reduce the amount of calcutations 
         #it needs to make. If the window crashs mid game then it is because this number is not high enough
         #you can change it to 100 if you are having problems
         return []
     counter = 0
+    p = Piece(x, y, shape) #create same piece from JTetris
     rotation = int(p.rotation)
     grid = sort(grid) #converts the grid from tuple to int
     

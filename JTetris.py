@@ -7,7 +7,6 @@ Engr 102 final project
 The game will consist of 4 different files:
     JTetris - presents tetris in a window and runs game and animation
         - Piece class within
-    JTetris - present the GUI for tetris in a window and do animation
     Brain - simple heuristic logic that knows how to play the tetris
     JBrainTetris - Similar to JTetris except that it uses a brain to play the game w/ out a human player
     BrainTester - Possibly include this file to test our brain and implement machine learning

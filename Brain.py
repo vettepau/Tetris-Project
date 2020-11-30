@@ -176,7 +176,9 @@ def sort(grid):
     the grid that gets sent from JBrainTetris it a list of tuples so because Seth used it for the colors so I have to
     create a new list that can give me a list of ints so that I know where blocks are based on if they are colored
     '''
-    pos = [[0,0,0,0,0,0,0,0,0,0]*20]
+    pos = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
+    for i in range(20):
+        pos[i] = [0,0,0,0,0,0,0,0,0,0]
     for k in range(len(grid)):
         for j in range(len(grid[k])):
             a,b,c = grid[k][j]
@@ -188,13 +190,13 @@ def validPositions(piece, grid):
     pos = [[]]
     for i in range(10): #x cooridate of piece
         h = 20 - getColumnHeight(grid,i) #lowest possible y coorindate of piece
-        for j in range(h,-1):
+        for j in range(h,-1): #the board starts from -1 at the top and goes down to 20
             piece.x = i
             piece.y = j
             if valid(piece, grid):
                 pos += [i,j]
                 break
-    return pos
+    return pos #max length 10 with inside array of two ints
 
 def getColumnHeight(grid, column):
     '''
@@ -202,9 +204,9 @@ def getColumnHeight(grid, column):
     '''
     h = 0
     c = column
-    for i in (1,21):
+    for i in range(10):
         if grid[i][c] == 1:
-            h = i
+            h = i + 1
     return h
 
 def Heights(grid):
@@ -224,9 +226,15 @@ def clear(grid, maxx):
     '''
     returns number of lines cleared
     '''
+    lines = 0
     for i in range(maxx):
+        num = 0
         for j in range(10):
-            x = 0
+            num += grid[i][j]
+        if num == 10:
+            lines += 1
+        num = 0
+    return lines
 
 def rate(grid):
     '''
@@ -240,20 +248,32 @@ def rate(grid):
         for j in range(h+1):
             if grid[j][i] == 0:
                 hole += 1
-    score = 8*maxx + 40*avg + 1.25*hole - 10*clear #random values that will be perfected later with machine learning
+    score = 8*maxx + 40*avg + 1.25*hole - 40*clear #random values that will be perfected later with machine learning
     return score
     
                 
 def best_position(piece,grid):
     '''
-    tests of the positions that are valid and decides which one is the best.
-    returns the x and y values of the best position
+    tests the positions that are valid and decides which one is the best.
+    returns the score and x value of the best position
     '''
+    bestscore = 100000 #lower the score the better
+    best_x = 0
     pos = validPositions(piece, grid)
     for i in range(len(pos)):
-        grid = grid
-        
-    return 0
+        grid1 = grid #new grid for each possible location
+        piece.x = pos[i][0]
+        piece.y = pos[i][1]
+        loc = convertShape(piece)
+        for k in range(4):
+            x, y = loc[k]
+            grid1[y][x] = 1
+        score = rate(grid1)
+        if score < bestscore:
+            bestscore = score
+            best_x = pos[i][0]
+    return bestscore, best_x
+            
                 
 def best_rotation(grid, piece):
     '''
@@ -261,13 +281,26 @@ def best_rotation(grid, piece):
     returns the rotation and x position
     '''
     rotation = 0
+    best_score = 100000
+    num, x = best_position(piece, grid)
+    piece.rotation += 1
+    num1, x1 = best_position(piece, grid) 
+    piece.rotation += 1
+    num2, x2 = best_position(piece, grid) 
+    piece.rotation += 1
+    num3, x3 = best_position(piece, grid) 
+    rotations = [num,0, x] + [num1, 1, x1] + [num2, 2, x2] + [num3, 3, x3]
+    for i in range(4):
+        if rotations[i][0] < best_score:
+            rotation = rotations[i][1]
+            best_score = rotations[i][0]
+    best_x = rotations[rotation][2]
     
-    return 0
+    return rotation, best_x
 
 
 
 counter = 0
-rotation = 0
 def run(grid, x, y, shape):
     p = Piece(x, y, shape) #create same piece from JTetris
     global counter
@@ -275,9 +308,11 @@ def run(grid, x, y, shape):
     if counter < 3: #slow the brain down
         return []
     counter = 0
-    
+    rotation = 0
+    print(grid)
     grid = sort(grid)
-    r, position = best_position(Piece,grid,x,y)
+    print(grid)
+    r, position = best_position(p,grid)
 
     if r != rotation:
         e = Event(pygame.KEYDOWN, pygame.K_UP)

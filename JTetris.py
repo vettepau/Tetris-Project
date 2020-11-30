@@ -1,17 +1,22 @@
 '''
 Tetris Project 
 Creators:
-    Paul Vetter, Seth Webb, Sarah Rosinbaum, & Anna Woodruff
+    Paul Vetter, Seth Webb, Anna Woodruff, & Sarah Rosinbaum
 Engr 102 final project
-
-The game will consist of 4 different files:
-    JTetris - presents tetris in a window and runs game and animation
-        - Piece class within
+The game will consist of 6 different classes:
+    Piece - a single tetris peice 
+    JTetris - present the GUI for tetris in a window and do animation
     Brain - simple heuristic logic that knows how to play the tetris
-    JBrainTetris - Similar to JTetris except that it uses a brain to play the game w/ out a human player
-    BrainTester - Possibly include this file to test our brain and implement machine learning
+    JBrainTetris - a subclass of JTetris that uses a brain to play the game w/ out a human player
+    BrainTester - Possibly include this class to test our brain and implement machine learning
+Using Tetris-Architecture.html for guidance and resources 
 '''
 
+# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 Instructions
 left arrow or "a" key moves piece left
@@ -544,8 +549,8 @@ def clearRows(grid, lockedPositions ):
     
     count = 0
     for i in range(19, -1, -1): #Counting Backwards, check to see if I did the math right Please. Count backwards to not overwrite rows.
-        row = grid[i]
-        if (0,0,0,) not in row: # If there are no blank black spaces
+        
+        if (0,0,0,) not in grid[i]: # If there are no blank black spaces
             count += 1
             remember = i
             for j in range(10):
@@ -600,7 +605,7 @@ def clearRows(grid, lockedPositions ):
         #DO NOT DO THE FOLLOWING LINE, CRASHES CODE. THE ERROR IS RARE AND NON GAME BREAKING, LEAVE IT FOR NOW AND IF WE HAVE TIME TRY TO FIX IT.
         #clearRows(grid, lockedPositions)#Testing out this reccursion, theres a weird glitch where sometimes when multiple line clears occour than are unconcurerent lines. Reccurive calls on succesful clears should help.  
         
-        return score
+        
 
 def drawGrid(screen, grid):
     """

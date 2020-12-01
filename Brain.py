@@ -30,11 +30,11 @@ class Piece(object):
     '''
     #x = 20
     #y = 10
-    def __init__(self, x, y, shape): 
+    def __init__(self, x, y, shape, rotation): 
         self.x  = x
         self.y = y
         self.shape = shape
-        self.rotation = 0 #Defaulted to 0
+        self.rotation = rotation #Defaulted to 0
         
 def convertShape(shape):
     '''
@@ -160,7 +160,21 @@ def clear(grid, maxx):
         num = 0
         for j in range(10):
             num += grid[i][j]
-        if num > 8: #changed it to 9 or 10 so that if a line is almost cleared it rewards that too
+        if num == 10: 
+            lines += 1
+        num = 0
+    return lines
+
+def almostClear(grid, maxx):
+    '''
+    returns number of lines that are almost cleared
+    '''
+    lines = 0
+    for i in range((20-maxx),20):
+        num = 0
+        for j in range(10):
+            num += grid[i][j]
+        if num > 7 and num < 10: #changed it to 8 or 9 so that if a line is almost cleared it rewards
             lines += 1
         num = 0
     return lines
@@ -172,6 +186,7 @@ def rate(grid):
     '''
     maxx, avg = Heights(grid)
     c = clear(grid, maxx)
+    c2 = almostClear(grid, maxx)
     hole = 0
     for i in range(10):
         h = 19 - getColumnHeight(grid,i) + 2 #where the first hole could be
@@ -180,7 +195,7 @@ def rate(grid):
         for j in range(h,20):
             if grid[j][i] == 0:
                 hole += 1
-    score = 80*maxx + 40*avg + 1.25*hole - 500*c #random values that will be perfected later with machine learning
+    score = 8*maxx + 40*avg + 1.25*hole - 40*c - 15*c2 #random values that will be perfected later with machine learning
     return score
     
 def best_position(piece,grid):
@@ -224,9 +239,8 @@ def best_rotation(grid, piece):
     num, x = best_position(piece, grid)
     rotations.append([num,0, x])
     piece.rotation += 1
-    shape2 = c.deepcopy(piece.shape) #rotational orinentation of the first rotation
     
-    if shape != piece.shape: 
+    if len(shape) > 1: 
         num1, x1 = best_position(piece, grid)
         rotations.append([num1,1, x1])
     else: #if it is a cube all 4 will be the same so just return the original
@@ -235,12 +249,12 @@ def best_rotation(grid, piece):
         return rotation, x
     piece.rotation += 1
     
-    if shape != piece.shape: #if it is a line then the original and the second will be the same
+    if len(shape) > 2: #if it is a line then the original and the second will be the same
         num2, x2 = best_position(piece, grid)
         rotations.append([num2,2, x2])
     piece.rotation += 1
     
-    if shape2 != piece.shape: #if it is a line the first rotation and the second will be the same
+    if len(shape) > 3: #if it is a line the first rotation and the second will be the same
         num3, x3 = best_position(piece, grid) 
         rotations.append([num2,3, x3])
         
@@ -254,7 +268,7 @@ def best_rotation(grid, piece):
 
 
 counter = 0
-def run(grid, x, y, shape):
+def run(grid, x, y, shape, rotation):
     '''
     Basically my main function. Creates a piece and gathers input from the other methods.
     Then returns the suggested movement based on the desired x pos and rotation
@@ -268,10 +282,11 @@ def run(grid, x, y, shape):
         #you can change it to 100 if you are having problems
         return []
     counter = 0
-    p = Piece(x, y, shape) #create same piece from JTetris
+    p = Piece(x, y, shape, rotation) #create same piece from JTetris
     rotation = int(p.rotation)
     grid = sort(grid) #converts the grid from tuple to int
     
+    p.rotation = 0 #set the rotation back to 0 for the calc
     r, position = best_rotation(grid, p) #gets the desired x pos and rotation
 
     if r != rotation:

@@ -240,7 +240,7 @@ def main(screen):
         x and y position of the piece in motion and its shape which the brain uses to calc the next move and returns it
         '''
         
-        for event in list(pygame.event.get()) + Brain.run(grid, currentPiece.x, currentPiece.y, currentPiece.shape): #Adds the suggested input from the brain
+        for event in list(pygame.event.get()) + Brain.run(grid, currentPiece.x, currentPiece.y, currentPiece.shape, currentPiece.rotation): #Adds the suggested input from the brain
             if event.type == pygame.QUIT:
                 run = False #this breaks out of the while Loop
                 

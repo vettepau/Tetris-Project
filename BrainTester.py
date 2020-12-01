@@ -8,7 +8,13 @@ the rate function of the brain. Over time it would find the optimized values for
 import JBrainTetris
 import importlib as lib
 
-x = JBrainTetris.scoreReturn()
-print(x)
+avg_score = 0
+for i in range(5):
+    x = JBrainTetris.scoreReturn()
+    avg_score += x
+
+
+avg_score = avg_score / 5
+print(avg_score)
 
 #lib.reload(JBrainTetris)
